@@ -1286,8 +1286,9 @@ function BlocComparison() {
         </div>
       )}
 
-      {/* Comparison table */}
-      <div style={{ border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden", marginBottom: 16 }}>
+      {/* Comparison table — unified grid including economic profile */}
+      <div style={{ border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden", marginBottom: 12 }}>
+        {/* Header row */}
         <div style={{ display: "grid", gridTemplateColumns: "130px 1fr 1fr" }}>
           <div style={{ padding: "8px 12px", background: "rgba(255,255,255,0.02)" }} />
           {[{ bloc: A, m: mA }, { bloc: B, m: mB }].map(({ bloc, m }) => (
@@ -1297,6 +1298,7 @@ function BlocComparison() {
             </div>
           ))}
         </div>
+        {/* Data rows */}
         {rows.map((r, i) => (
           <div key={i} style={{ display: "grid", gridTemplateColumns: "130px 1fr 1fr", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
             <div style={{ padding: "9px 12px", background: "rgba(255,255,255,0.01)" }}>
@@ -1308,14 +1310,16 @@ function BlocComparison() {
         ))}
       </div>
 
-      {/* Economic profiles side-by-side */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      {/* Economic profiles — separate table, columns aligned to main table */}
+      <div style={{ border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden", display: "grid", gridTemplateColumns: "130px 1fr 1fr" }}>
+        <div style={{ padding: "9px 12px", background: "rgba(255,255,255,0.02)", gridRow: "1 / 3" }}>
+          <Label style={{ marginBottom: 6 }}>ECONOMIC PROFILE</Label>
+        </div>
         {[{ bloc: A, m: mA }, { bloc: B, m: mB }].map(({ bloc, m }) => (
-          <div key={bloc.id} style={{ border: `1px solid ${m.color}33`, borderTop: `2px solid ${m.color}`, borderRadius: 2, padding: 12 }}>
-            <div style={{ color: m.color, fontFamily: mono, fontSize: 12, marginBottom: 10 }}>{bloc.id} · ECONOMIC PROFILE</div>
-            <Label style={{ marginBottom: 4 }}>PILLARS</Label>
+          <div key={bloc.id} style={{ padding: "12px 14px", borderLeft: "1px solid rgba(255,255,255,0.04)", borderTop: `2px solid ${m.color}` }}>
+            <div style={{ color: m.color, fontFamily: mono, fontSize: 11, marginBottom: 8 }}>{bloc.id} · PILLARS</div>
             {bloc.pillars.map((p, i) => <div key={i} style={{ color: "#aaa8b0", fontFamily: mono, fontSize: 12, padding: "2px 0" }}>› {p}</div>)}
-            <Label style={{ marginTop: 10, marginBottom: 4 }}>WEAKNESSES</Label>
+            <div style={{ color: "#d07060", fontFamily: mono, fontSize: 11, marginTop: 10, marginBottom: 6 }}>{bloc.id} · WEAKNESSES</div>
             {bloc.weaknesses.map((w, i) => <div key={i} style={{ color: "#d07060", fontFamily: mono, fontSize: 12, padding: "2px 0" }}>✕ {w}</div>)}
           </div>
         ))}
