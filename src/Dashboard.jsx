@@ -1520,7 +1520,7 @@ export default function Dashboard() {
                         </div>
                         <div>
                           <Label>CAN DO</Label>
-                          {a.canDo.map((m, i) => <div key={i} style={{ color: "#c8a860", fontFamily: mono, fontSize: 12, padding: "2px 0" }}>✓ {m}</div>)}
+                          {a.canDo.map((m, i) => <div key={i} style={{ color: "#40c8a0", fontFamily: mono, fontSize: 12, padding: "2px 0" }}>✓ {m}</div>)}
                           <div style={{ marginTop: 8 }} />
                           <Label>CANNOT DO</Label>
                           {a.cannotDo.map((m, i) => <div key={i} style={{ color: "#e05a3a", fontFamily: mono, fontSize: 12, padding: "2px 0" }}>✕ {m}</div>)}
