@@ -4,9 +4,9 @@ import { useState, useMemo } from "react";
 const BLOC_META = {
   TLC:    { color: "#4a9eff", accent: "#0a1830", gband: "G1",  grange: "0.9–1.0g",    orbitX: 18,  orbitY: 50 },
   MF:     { color: "#e05a3a", accent: "#200800", gband: "G2",  grange: "0.38–0.8g",   orbitX: 30,  orbitY: 50 },
-  BCC:    { color: "#f0a030", accent: "#1a0e00", gband: "G3",  grange: "0.3–0.6g",    orbitX: 46,  orbitY: 50 },
-  JFA:    { color: "#a060e0", accent: "#0e0020", gband: "G3",  grange: "0.6–1.0g",    orbitX: 62,  orbitY: 50 },
-  SatCon: { color: "#40c8a0", accent: "#001a12", gband: "G2",  grange: "0.3–0.7g",    orbitX: 78,  orbitY: 50 },
+  BCC:    { color: "#b0b0b0", accent: "#181818", gband: "G3",  grange: "0.3–0.6g",    orbitX: 46,  orbitY: 50 },
+  JFA:    { color: "#f0a030", accent: "#1a0e00", gband: "G3",  grange: "0.6–1.0g",    orbitX: 62,  orbitY: 50 },
+  SatCon: { color: "#c8a860", accent: "#1a1400", gband: "G2",  grange: "0.3–0.7g",    orbitX: 78,  orbitY: 50 },
 };
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
@@ -175,11 +175,11 @@ const TENSION = {
 };
 
 const GBAND_TABLE = [
-  { band: "G1", range: "0.9–1.1g", natives: "Terrans, Luna AG, inner-system habitats", baseline: "Dense skeletal mass, strong cardiovascular output. High susceptibility to microgravity deconditioning.", inward: "Native", outward: "Easy — deconditioning risk on return" },
-  { band: "G2", range: "0.6–0.9g", natives: "Martians, Titanians, major hab-ring environments", baseline: "Moderated bone density, efficient vascular adaptation. Manageable long-term with standard IHC protocols.", inward: "Medically supervised — 6–12 month acclimation", outward: "Easy — deconditioning risk on return" },
-  { band: "G3", range: "0.3–0.6g", natives: "Belters, Cereans, Jovian AG zones", baseline: "Lower musculoskeletal mass, high metabolic efficiency. High tolerance for AG cycling.", inward: "Restricted — full screening, 12–18 month acclimation, possible exoskeletal assist", outward: "Easy" },
-  { band: "G4", range: "0.05–0.3g", natives: "Long-term Belters, outer AG habitats", baseline: "Extreme low-G adaptation. High downwell collapse risk. Cannot safely function at G1.", inward: "Severely restricted — medically expensive, rare", outward: "Routine" },
-  { band: "G5", range: "Micro-G", natives: "Frontier rotation crew, deep-space crews", baseline: "Extreme adaptability. Highest downwell collapse risk. LTAM booster cycles required. No generational baselines under TKA statute.", inward: "Prohibited without full LTAM programme", outward: "Routine" },
+  { band: "G1", range: "0.9–1.1g", natives: "Terrans, Luna AG, inner-system habitats", baseline: "Dense skeletal mass, strong cardiovascular output. High susceptibility to microgravity deconditioning.", inward: "Native", outward: "Routine — deconditioning risk on extended low-G exposure", outwardLevel: "routine" },
+  { band: "G2", range: "0.6–0.9g", natives: "Martians, Titanians, major hab-ring environments", baseline: "Moderated bone density, efficient vascular adaptation. Manageable long-term with standard IHC protocols.", inward: "Medically supervised — 6–12 month acclimation", outward: "Easy", outwardLevel: "easy" },
+  { band: "G3", range: "0.3–0.6g", natives: "Belters, Cereans, Jovian AG zones", baseline: "Lower musculoskeletal mass, high metabolic efficiency. High tolerance for AG cycling.", inward: "Restricted — full screening, 12–18 month acclimation, possible exoskeletal assist", outward: "Easy", outwardLevel: "easy" },
+  { band: "G4", range: "0.05–0.3g", natives: "Long-term Belters, outer AG habitats", baseline: "Extreme low-G adaptation. High downwell collapse risk. Cannot safely function at G1.", inward: "Severely restricted — medically expensive, rare", outward: "Routine", outwardLevel: "routine" },
+  { band: "G5", range: "Micro-G", natives: "Frontier rotation crew, deep-space crews", baseline: "Extreme adaptability. Highest downwell collapse risk. LTAM booster cycles required. No generational baselines under TKA statute.", inward: "Prohibited without full LTAM programme", outward: "Routine", outwardLevel: "routine" },
 ];
 
 // ─── SMALL COMPONENTS ────────────────────────────────────────────────────────
@@ -187,31 +187,84 @@ const GBAND_TABLE = [
 const mono = "'Share Tech Mono', monospace";
 const serif = "'Crimson Text', serif";
 
+// ─── COLOUR CONSTANTS ────────────────────────────────────────────────────────
+const C = {
+  // Bloc colours
+  tlc:     "#4a9eff",
+  mf:      "#e05a3a",
+  bcc:     "#b0b0b0",
+  jfa:     "#f0a030",
+  satcon:  "#c8a860",
+
+  // IA institutional
+  ia:      "#50c8ff",
+
+  // Risk / mobility / G-band scale
+  rNone:   "#40c8a0",   // native / no restriction / green
+  rLow:    "#c8b040",   // low–medium / routine outward
+  rMed:    "#f0a030",   // medium / medically supervised
+  rMedH:   "#e08030",   // medium–high / controlled
+  rHigh:   "#e05a3a",   // high / restricted
+  rProhib: "#c03020",   // prohibited / severe
+
+  // Status
+  stable:    "#40c8a0",
+  contested: "#e05a3a",
+  strained:  "#f0a030",
+
+  // Tension matrix
+  tCoop:    "#40c8a0",
+  tFric:    "#c8b040",
+  tCont:    "#f0a030",
+  tTense:   "#e08030",
+  tCrit:    "#e05a3a",
+
+  // Text
+  textPrimary:   "#d8d0c0",
+  textSecondary: "#b0a898",
+  textDim:       "#a0a0a0",
+  textFaint:     "#888898",
+
+  // Agency colours
+  agIA:    "#6ab0ff",
+  agINA:   "#f0c030",
+  agICC:   "#50c8ff",
+  agIEA:   "#60d860",
+  agIHC:   "#e080c0",
+  agIFE:   "#c8a040",
+  agIJC:   "#e05a3a",
+  agISA:   "#a060e0",
+  agITC:   "#f0a030",
+  agTKA:   "#80c8e0",
+};
+
+
 function Label({ children, style }) {
-  return <div style={{ color: "#4a4a5a", fontSize: 9, letterSpacing: 2, fontFamily: mono, marginBottom: 3, textTransform: "uppercase", ...style }}>{children}</div>;
+  return <div style={{ color: "#9090a8", fontSize: 11, letterSpacing: 2, fontFamily: mono, marginBottom: 3, textTransform: "uppercase", ...style }}>{children}</div>;
 }
 
 function riskColor(r) {
-  if (!r) return "#555";
+  if (!r) return C.textDim;
   const rl = r.toLowerCase();
-  if (rl === "high" || rl === "critical") return "#e05a3a";
-  if (rl.includes("medium–high")) return "#e08030";
-  if (rl.includes("medium")) return "#f0a030";
-  if (rl.includes("low–medium")) return "#c8b040";
-  return "#40c8a0";
+  if (rl.includes("prohibit") || rl.includes("severe")) return C.rProhib;
+  if (rl === "high" || rl === "critical") return C.rHigh;
+  if (rl.includes("medium–high") || rl.includes("controlled")) return C.rMedH;
+  if (rl.includes("medium")) return C.rMed;
+  if (rl.includes("low–medium")) return C.rLow;
+  return C.rNone;
 }
 
 function statusColor(s) {
-  if (!s) return "#555";
+  if (!s) return C.textDim;
   const sl = s.toLowerCase();
-  if (sl.includes("unstable") || sl.includes("contested")) return "#e05a3a";
-  if (sl.includes("tense") || sl.includes("strained")) return "#f0a030";
-  if (sl.includes("stable")) return "#40c8a0";
-  return "#4a9eff";
+  if (sl.includes("unstable") || sl.includes("contested")) return C.contested;
+  if (sl.includes("tense") || sl.includes("strained")) return C.strained;
+  if (sl.includes("stable") || sl.includes("active")) return C.stable;
+  return C.ia;
 }
 
 function tensionColor(level) {
-  return ["#40c8a0", "#c8b040", "#f0a030", "#e08030", "#e05a3a"][level] || "#555";
+  return [C.tCoop, C.tFric, C.tCont, C.tTense, C.tCrit][level] || C.textDim;
 }
 
 // ─── LOG-SCALE POSITION HELPER ────────────────────────────────────────────────
@@ -234,7 +287,7 @@ const MAP_NODES = [
 
 const ZONE_NODES = [
   {
-    id: "IGSC", label: "IGSC", auMid: 22, au: "~19–30 AU", type: "zone", color: "#4a9eff",
+    id: "IGSC", label: "IGSC", auMid: 22, au: "~19–30 AU", type: "zone", color: "#50c8ff",
     title: "Ice Giant Survey Corridor",
     classification: "INA Class-II Survey Zone",
     sub: [
@@ -242,7 +295,7 @@ const ZONE_NODES = [
       { id: "NSZ", label: "NSZ", auMid: 30.1, au: "~30 AU", note: "Neptune Survey Zone · no crewed outpost · robotic probes only" },
     ],
     details: [
-      "Both bodies classified as INA Class-II Survey Zones — charted but unserviced.",
+      "Uranus (USZ) and Neptune (NSZ) are classified as INA Class-II Survey Zones — charted but unserviced.",
       "No permanent traffic infrastructure, corridor designation, or emergency response capability.",
       "ISA maintains standing robotic probe research permits for both systems.",
       "No bloc OCC claims. No IA territorial dispute recorded.",
@@ -252,7 +305,7 @@ const ZONE_NODES = [
     ],
   },
   {
-    id: "TKA", label: "TKA", auMid: 50, au: "30+ AU", type: "zone", color: "#4a9eff",
+    id: "TKA", label: "TKA", auMid: 50, au: "30+ AU", type: "zone", color: "#50c8ff",
     title: "TKA Frontier — Trans-Kuiper Zone",
     classification: "TKA Treaty Zone — Non-Sovereign Frontier",
     sub: [],
@@ -269,11 +322,9 @@ const ZONE_NODES = [
   },
 ];
 
-function SystemMap({ onSelectBloc, selectedBloc }) {
-  const [selectedZone, setSelectedZone] = useState(null);
-
-  const handleZoneClick = (id) => setSelectedZone(selectedZone === id ? null : id);
-  const handleBlocClick = (id) => { onSelectBloc(selectedBloc === id ? null : id); setSelectedZone(null); };
+function SystemMap({ onSelectBloc, selectedBloc, onZoneChange, selectedZone }) {
+  const handleZoneClick = (id) => onZoneChange(selectedZone === id ? null : id);
+  const handleBlocClick = (id) => { onSelectBloc(selectedBloc === id ? null : id); onZoneChange(null); };
 
   const selectedZoneData = ZONE_NODES.find(z => z.id === selectedZone);
   const selectedBlocNode = MAP_NODES.find(n => n.id === selectedBloc);
@@ -281,7 +332,7 @@ function SystemMap({ onSelectBloc, selectedBloc }) {
   return (
     <div style={{ background: "#04060c", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, padding: "16px 20px", marginBottom: 16 }}>
       <Label>HELIOCENTRIC SYSTEM SCHEMATIC · INNER → OUTER</Label>
-      <svg viewBox="0 0 100 22" style={{ width: "100%", height: 140, display: "block", marginTop: 6 }}>
+      <svg viewBox="0 0 104 22" style={{ width: "100%", height: 140, display: "block", marginTop: 6 }}>
         {/* Sun */}
         <circle cx={auToX(0.4)} cy="11" r="2.2" fill="#f0c030" opacity="0.9" />
         <text x={auToX(0.4)} y="18" textAnchor="middle" fill="#f0c03066" fontSize="1.7" fontFamily="Share Tech Mono, monospace">SOL</text>
@@ -296,21 +347,25 @@ function SystemMap({ onSelectBloc, selectedBloc }) {
           );
         })}
 
-        {/* IGSC shaded band */}
+        {/* IGSC shaded band — only when selected */}
         {(() => {
+          const sel = selectedZone === "IGSC";
+          if (!sel) return null;
           const x1 = auToX(19), x2 = auToX(30);
           return (
-            <rect x={x1} y="5" width={x2 - x1} height="12" fill="rgba(74,158,255,0.04)"
-              stroke="rgba(74,158,255,0.12)" strokeWidth="0.15" strokeDasharray="0.6 0.4" rx="0.3" />
+            <rect x={x1} y="5" width={x2 - x1} height="12" fill="rgba(80,200,255,0.06)"
+              stroke="rgba(80,200,255,0.2)" strokeWidth="0.2" strokeDasharray="0.6 0.4" rx="0.3" />
           );
         })()}
 
-        {/* TKA zone shading */}
+        {/* TKA zone shading — only when selected, starts cleanly after NSZ */}
         {(() => {
-          const x1 = auToX(30), x2 = 98;
+          const sel = selectedZone === "TKA";
+          if (!sel) return null;
+          const x1 = auToX(30.1) + 3, x2 = 104;
           return (
-            <rect x={x1} y="5" width={x2 - x1} height="12" fill="rgba(74,158,255,0.02)"
-              stroke="rgba(74,158,255,0.07)" strokeWidth="0.15" strokeDasharray="0.6 0.4" rx="0.3" />
+            <rect x={x1} y="5" width={x2 - x1} height="12" fill="rgba(80,200,255,0.04)"
+              stroke="rgba(80,200,255,0.15)" strokeWidth="0.2" strokeDasharray="0.6 0.4" rx="0.3" />
           );
         })()}
 
@@ -320,7 +375,7 @@ function SystemMap({ onSelectBloc, selectedBloc }) {
           const sel = selectedBloc === b.id;
           const x = auToX(b.auMid);
           return (
-            <g key={b.id} onClick={() => handleBlocClick(b.id)} style={{ cursor: "pointer" }}>
+            <g key={b.id} onClick={() => { handleBlocClick(b.id); onZoneChange(null); }} style={{ cursor: "pointer" }}>
               <circle cx={x} cy="11" r={sel ? 2.0 : 1.5}
                 fill={sel ? meta.color : meta.color + "99"}
                 stroke={sel ? meta.color : "transparent"} strokeWidth="0.3" />
@@ -338,84 +393,95 @@ function SystemMap({ onSelectBloc, selectedBloc }) {
           if (z.id === "IGSC") {
             const uszX = auToX(z.sub[0].auMid), nszX = auToX(z.sub[1].auMid);
             return (
-              <g key={z.id} onClick={() => handleZoneClick(z.id)} style={{ cursor: "pointer" }}>
+              <g key={z.id} onClick={() => { handleZoneClick(z.id); onSelectBloc(null); }} style={{ cursor: "pointer" }}>
+                {/* Invisible full hit area covering the entire IGSC zone */}
+                <rect x={uszX - 3} y="3" width={nszX - uszX + 6} height="16" fill="transparent" />
                 <text x={(uszX + nszX) / 2} y="4.2" textAnchor="middle" fill={sel ? z.color : z.color + "55"}
                   fontSize="1.6" fontFamily="Share Tech Mono, monospace">IGSC</text>
                 {/* USZ node */}
-                <circle cx={uszX} cy="11" r={sel ? 1.4 : 1.0} fill="none"
-                  stroke={sel ? z.color : z.color + "55"} strokeWidth="0.35" strokeDasharray={sel ? "none" : "0.5 0.3"} />
-                <text x={uszX} y="8.5" textAnchor="middle" fill={sel ? z.color : z.color + "66"}
+                <circle cx={uszX} cy="11" r={sel ? 1.6 : 1.2} fill={sel ? z.color + "22" : "transparent"}
+                  stroke={sel ? z.color : z.color + "66"} strokeWidth="0.35" strokeDasharray={sel ? "none" : "0.5 0.3"} />
+                <text x={uszX} y="8.5" textAnchor="middle" fill={sel ? z.color : z.color + "77"}
                   fontSize="1.7" fontFamily="Share Tech Mono, monospace">USZ</text>
                 {/* NSZ node */}
-                <circle cx={nszX} cy="11" r={sel ? 1.4 : 1.0} fill="none"
-                  stroke={sel ? z.color : z.color + "55"} strokeWidth="0.35" strokeDasharray={sel ? "none" : "0.5 0.3"} />
-                <text x={nszX} y="8.5" textAnchor="middle" fill={sel ? z.color : z.color + "66"}
+                <circle cx={nszX} cy="11" r={sel ? 1.6 : 1.2} fill={sel ? z.color + "22" : "transparent"}
+                  stroke={sel ? z.color : z.color + "66"} strokeWidth="0.35" strokeDasharray={sel ? "none" : "0.5 0.3"} />
+                <text x={nszX} y="8.5" textAnchor="middle" fill={sel ? z.color : z.color + "77"}
                   fontSize="1.7" fontFamily="Share Tech Mono, monospace">NSZ</text>
               </g>
             );
           }
-          // TKA
+          // TKA — positioned with clear gap after NSZ
           return (
-            <g key={z.id} onClick={() => handleZoneClick(z.id)} style={{ cursor: "pointer" }}>
-              <line x1={x - 0.5} y1="5" x2={x - 0.5} y2="17"
-                stroke={sel ? z.color : z.color + "44"} strokeWidth="0.3" strokeDasharray="0.5 0.4" />
-              <text x={x + 1} y="8" fill={sel ? z.color : z.color + "88"}
+            <g key={z.id} onClick={() => { handleZoneClick(z.id); onSelectBloc(null); }} style={{ cursor: "pointer" }}>
+              <rect x={78} y="3" width="18" height="16" fill="transparent" />
+              <text x={78} y="8" fill={sel ? z.color : z.color + "88"}
                 fontSize="1.8" fontFamily="Share Tech Mono, monospace">TKA</text>
-              <text x={x + 1} y="11" fill={sel ? z.color : z.color + "55"}
+              <text x={78} y="11" fill={sel ? z.color : z.color + "55"}
                 fontSize="1.5" fontFamily="Share Tech Mono, monospace">FRONTIER</text>
             </g>
           );
         })}
       </svg>
 
-      <div style={{ color: "#2a2a3a", fontSize: 9, fontFamily: mono, textAlign: "center", marginBottom: 8 }}>
+      <div style={{ color: "#888898", fontSize: 11, fontFamily: mono, textAlign: "center", marginBottom: 8 }}>
         ☉ LOG-SCALE · click a bloc node or zone for details · orbital distances approximate
       </div>
 
-      {/* Info panel — bloc or zone, consistent card style */}
+      {/* Slim bar — same format for both blocs and zones */}
       {(selectedBloc || selectedZone) && (() => {
         if (selectedZone) {
           const z = selectedZoneData;
           return (
-            <div style={{ border: `1px solid ${z.color}44`, borderLeft: `3px solid ${z.color}`, borderRadius: 2, padding: 14, background: "rgba(10,24,48,0.7)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
-                <div>
-                  <span style={{ fontFamily: mono, color: z.color, fontSize: 11, letterSpacing: 2 }}>[{z.id}]</span>
-                  <div style={{ fontFamily: serif, fontSize: 18, color: "#e8e4dc", marginTop: 2 }}>{z.title}</div>
-                  <div style={{ fontFamily: mono, fontSize: 9, color: "#555", marginTop: 2 }}>{z.classification}</div>
-                </div>
-                <div style={{ textAlign: "right", fontFamily: mono }}>
-                  <div style={{ color: z.color, fontSize: 11 }}>{z.au}</div>
-                  {z.sub.length > 0 && (
-                    <div style={{ marginTop: 4 }}>
-                      {z.sub.map(s => (
-                        <div key={s.id} style={{ color: "#555", fontSize: 9 }}>{s.label} · {s.au}</div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: 0, marginBottom: 10, borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: 6 }}>
-                <span style={{ fontFamily: mono, fontSize: 9, color: z.color, letterSpacing: 2 }}>NOTES & STATUS</span>
-              </div>
-              {z.details.map((d, i) => (
-                <div key={i} style={{ color: "#6a6070", fontFamily: mono, fontSize: 10, padding: "3px 0", lineHeight: 1.5 }}>
-                  › {d}
-                </div>
-              ))}
+            <div style={{ border: `1px solid ${z.color}33`, borderLeft: `3px solid ${z.color}`, borderRadius: 2, padding: "10px 14px", background: "rgba(10,18,36,0.8)", fontFamily: mono, display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
+              <span style={{ color: z.color, fontSize: 13 }}>{z.au}</span>
+              <span style={{ color: "#aaaaaa", fontSize: 12 }}>{z.classification}</span>
             </div>
           );
         }
-        // Bloc popup — just AU and network
         const n = selectedBlocNode;
         const meta = BLOC_META[selectedBloc];
         return (
           <div style={{ border: `1px solid ${meta.color}33`, borderLeft: `3px solid ${meta.color}`, borderRadius: 2, padding: "10px 14px", background: `${meta.accent}aa`, fontFamily: mono, display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
-            <span style={{ color: meta.color, fontSize: 11 }}>{n.au}</span>
-            <span style={{ color: "#666", fontSize: 10 }}>{n.note}</span>
+            <span style={{ color: meta.color, fontSize: 13 }}>{n.au}</span>
+            <span style={{ color: "#aaaaaa", fontSize: 12 }}>{n.note}</span>
           </div>
         );
       })()}
+    </div>
+  );
+}
+
+// ─── ZONE DETAIL CARD ─────────────────────────────────────────────────────────
+
+function ZoneDetail({ zone }) {
+  const z = zone;
+  return (
+    <div style={{ border: `1px solid ${z.color}44`, borderLeft: `3px solid ${z.color}`, borderRadius: 2, padding: 16, background: "rgba(10,18,36,0.7)", marginBottom: 10 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+        <div>
+          <span style={{ fontFamily: mono, color: z.color, fontSize: 13, letterSpacing: 2 }}>[{z.id}]</span>
+          <div style={{ fontFamily: serif, fontSize: 20, color: "#f0ece4", marginTop: 2 }}>{z.title}</div>
+          <div style={{ fontFamily: mono, fontSize: 11, color: "#a0a0a0", marginTop: 2 }}>{z.classification}</div>
+        </div>
+        <div style={{ textAlign: "right", fontFamily: mono }}>
+          <div style={{ color: z.color, fontSize: 13 }}>{z.au}</div>
+          {z.sub.length > 0 && (
+            <div style={{ marginTop: 4 }}>
+              {z.sub.map(s => (
+                <div key={s.id} style={{ color: "#a0a0a0", fontSize: 11 }}>{s.label} · {s.au}</div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 10 }}>
+        {z.details.map((d, i) => (
+          <div key={i} style={{ color: "#aaa8b0", fontFamily: mono, fontSize: 12, padding: "3px 0", lineHeight: 1.5 }}>
+            › {d}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -451,16 +517,16 @@ function TradeDependencyPanel() {
       <Label style={{ marginBottom: 12 }}>SYSTEM RESOURCE DEPENDENCY MAP · IFE REFERENCE · ITC TRADE REGISTRY</Label>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 10 }}>
         {Object.entries(grouped).map(([from, items]) => {
-          const meta = BLOC_META[from] || { color: "#888" };
+          const meta = BLOC_META[from] || { color: "#b0b0b0" };
           return (
             <div key={from} style={{ borderLeft: `2px solid ${meta.color}55`, paddingLeft: 10 }}>
-              <div style={{ color: meta.color, fontFamily: mono, fontSize: 10, letterSpacing: 1, marginBottom: 6 }}>{from}</div>
+              <div style={{ color: meta.color, fontFamily: mono, fontSize: 12, letterSpacing: 1, marginBottom: 6 }}>{from}</div>
               {items.map((d, i) => (
                 <div key={i} style={{ display: "flex", gap: 6, alignItems: "flex-start", marginBottom: 4 }}>
-                  <span style={{ color: d.critical ? "#e05a3a" : "#555", fontSize: 10, marginTop: 1 }}>{d.critical ? "●" : "○"}</span>
+                  <span style={{ color: d.critical ? "#e05a3a" : "#a0a0a0", fontSize: 12, marginTop: 1 }}>{d.critical ? "●" : "○"}</span>
                   <div>
-                    <span style={{ color: "#6a6070", fontFamily: mono, fontSize: 10 }}>{d.to !== "All" ? (BLOC_META[d.to]?.color ? <span style={{ color: BLOC_META[d.to].color }}>{d.to}</span> : d.to) : <span style={{ color: "#888" }}>SYSTEM</span>}</span>
-                    <span style={{ color: "#4a4050", fontFamily: mono, fontSize: 10 }}> — {d.what}</span>
+                    <span style={{ color: "#aaa8b0", fontFamily: mono, fontSize: 12 }}>{d.to !== "All" ? (BLOC_META[d.to]?.color ? <span style={{ color: BLOC_META[d.to].color }}>{d.to}</span> : d.to) : <span style={{ color: "#b0b0b0" }}>SYSTEM</span>}</span>
+                    <span style={{ color: "#9090a0", fontFamily: mono, fontSize: 12 }}> — {d.what}</span>
                   </div>
                 </div>
               ))}
@@ -469,8 +535,8 @@ function TradeDependencyPanel() {
         })}
       </div>
       <div style={{ marginTop: 10, display: "flex", gap: 14 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ color: "#e05a3a", fontSize: 10 }}>●</span><span style={{ color: "#444", fontFamily: mono, fontSize: 9 }}>Critical dependency</span></div>
-        <div style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ color: "#555", fontSize: 10 }}>○</span><span style={{ color: "#444", fontFamily: mono, fontSize: 9 }}>Significant dependency</span></div>
+        <div style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ color: "#e05a3a", fontSize: 12 }}>●</span><span style={{ color: "#909090", fontFamily: mono, fontSize: 11 }}>Critical dependency</span></div>
+        <div style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ color: "#a0a0a0", fontSize: 12 }}>○</span><span style={{ color: "#909090", fontFamily: mono, fontSize: 11 }}>Significant dependency</span></div>
       </div>
     </div>
   );
@@ -488,23 +554,23 @@ function TensionMatrix() {
     <div style={{ background: "#04060c", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, padding: 16 }}>
       <Label style={{ marginBottom: 12 }}>INTER-BLOC TENSION MATRIX · IA COUNCIL OF SYSTEMS AFFAIRS · CLICK CELL TO EXPAND</Label>
       <div style={{ overflowX: "auto" }}>
-        <table style={{ borderCollapse: "collapse", width: "100%", fontFamily: mono, fontSize: 11 }}>
+        <table style={{ borderCollapse: "collapse", width: "100%", fontFamily: mono, fontSize: 13 }}>
           <thead>
             <tr>
-              <td style={{ padding: "6px 10px", color: "#333", fontSize: 9 }}>FROM ↓ TO →</td>
+              <td style={{ padding: "6px 10px", color: "#888898", fontSize: 11 }}>FROM ↓ TO →</td>
               {blocs.map(b => (
-                <td key={b} style={{ padding: "6px 10px", color: BLOC_META[b].color, textAlign: "center", fontSize: 10, letterSpacing: 1 }}>{b}</td>
+                <td key={b} style={{ padding: "6px 10px", color: BLOC_META[b].color, textAlign: "center", fontSize: 12, letterSpacing: 1 }}>{b}</td>
               ))}
             </tr>
           </thead>
           <tbody>
             {blocs.map(from => (
               <tr key={from}>
-                <td style={{ padding: "6px 10px", color: BLOC_META[from].color, fontSize: 10, letterSpacing: 1, whiteSpace: "nowrap" }}>{from}</td>
+                <td style={{ padding: "6px 10px", color: BLOC_META[from].color, fontSize: 12, letterSpacing: 1, whiteSpace: "nowrap" }}>{from}</td>
                 {blocs.map(to => {
                   if (from === to) return (
                     <td key={to} style={{ padding: "6px 10px", textAlign: "center", background: "rgba(255,255,255,0.02)" }}>
-                      <span style={{ color: "#2a2a2a" }}>—</span>
+                      <span style={{ color: "#888898" }}>—</span>
                     </td>
                   );
                   const t = TENSION[from]?.[to];
@@ -517,7 +583,7 @@ function TensionMatrix() {
                         background: isSel ? `${tensionColor(t?.level)}18` : "transparent",
                         outline: isSel ? `1px solid ${tensionColor(t?.level)}55` : "none",
                         transition: "background 0.15s" }}>
-                      <div style={{ color: tensionColor(t?.level), fontSize: 11, fontWeight: 600 }}>{t?.level ?? "?"}</div>
+                      <div style={{ color: tensionColor(t?.level), fontSize: 13, fontWeight: 600 }}>{t?.level ?? "?"}</div>
                       <div style={{ color: tensionColor(t?.level), fontSize: 8, opacity: 0.7 }}>{t?.label}</div>
                     </td>
                   );
@@ -537,16 +603,16 @@ function TensionMatrix() {
         return (
           <div style={{ marginTop: 12, padding: "12px 16px", border: `1px solid ${tensionColor(t.level)}44`, borderLeft: `3px solid ${tensionColor(t.level)}`, borderRadius: 2, background: `${tensionColor(t.level)}06` }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <div style={{ fontFamily: mono, fontSize: 11 }}>
+              <div style={{ fontFamily: mono, fontSize: 13 }}>
                 <span style={{ color: fMeta.color }}>{from}</span>
-                <span style={{ color: "#444" }}> → </span>
+                <span style={{ color: "#909090" }}> → </span>
                 <span style={{ color: tMeta.color }}>{to}</span>
               </div>
-              <div style={{ color: tensionColor(t.level), fontFamily: mono, fontSize: 10, letterSpacing: 1 }}>
+              <div style={{ color: tensionColor(t.level), fontFamily: mono, fontSize: 12, letterSpacing: 1 }}>
                 LEVEL {t.level} · {t.label.toUpperCase()}
               </div>
             </div>
-            <div style={{ color: "#8a8070", fontFamily: mono, fontSize: 11, lineHeight: 1.6 }}>{t.note}</div>
+            <div style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 13, lineHeight: 1.6 }}>{t.note}</div>
           </div>
         );
       })()}
@@ -555,7 +621,7 @@ function TensionMatrix() {
         {[0,1,2,3,4].map(l => (
           <div key={l} style={{ display: "flex", alignItems: "center", gap: 5 }}>
             <div style={{ width: 8, height: 8, borderRadius: 1, background: tensionColor(l) }} />
-            <span style={{ color: "#555", fontSize: 9, fontFamily: mono }}>{l} — {["Cooperative","Friction","Contested","Tense","Critical"][l]}</span>
+            <span style={{ color: "#a0a0a0", fontSize: 11, fontFamily: mono }}>{l} — {["Cooperative","Friction","Contested","Tense","Critical"][l]}</span>
           </div>
         ))}
       </div>
@@ -574,13 +640,13 @@ function BlocDetail({ bloc }) {
     <div style={{ border: `1px solid ${meta.color}44`, borderLeft: `3px solid ${meta.color}`, borderRadius: 2, padding: 16, background: `${meta.accent}aa`, marginBottom: 10 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
         <div>
-          <span style={{ fontFamily: mono, color: meta.color, fontSize: 12, letterSpacing: 2 }}>[{bloc.id}]</span>
-          <div style={{ fontFamily: serif, fontSize: 20, color: "#e8e4dc", marginTop: 2 }}>{bloc.name}</div>
-          <div style={{ fontFamily: mono, fontSize: 10, color: "#666", marginTop: 2 }}>{bloc.tagline}</div>
+          <span style={{ fontFamily: mono, color: meta.color, fontSize: 13, letterSpacing: 2 }}>[{bloc.id}]</span>
+          <div style={{ fontFamily: serif, fontSize: 21, color: "#f0ece4", marginTop: 2 }}>{bloc.name}</div>
+          <div style={{ fontFamily: mono, fontSize: 12, color: "#aaaaaa", marginTop: 2 }}>{bloc.tagline}</div>
         </div>
         <div style={{ textAlign: "right", fontFamily: mono }}>
-          <div style={{ color: meta.color, fontSize: 12 }}>{meta.gband}</div>
-          <div style={{ color: "#444", fontSize: 9, marginTop: 1 }}>{meta.grange}</div>
+          <div style={{ color: meta.color, fontSize: 13 }}>{meta.gband}</div>
+          <div style={{ color: "#909090", fontSize: 11, marginTop: 1 }}>{meta.grange}</div>
         </div>
       </div>
 
@@ -589,8 +655,8 @@ function BlocDetail({ bloc }) {
           <button key={t} onClick={() => setSubtab(t)} style={{
             background: "transparent", border: "none",
             borderBottom: subtab === t ? `2px solid ${meta.color}` : "2px solid transparent",
-            color: subtab === t ? meta.color : "#444",
-            fontFamily: mono, fontSize: 9, letterSpacing: 2,
+            color: subtab === t ? meta.color : "#909090",
+            fontFamily: mono, fontSize: 11, letterSpacing: 2,
             padding: "6px 14px", cursor: "pointer", textTransform: "uppercase"
           }}>{t}</button>
         ))}
@@ -600,29 +666,29 @@ function BlocDetail({ bloc }) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           <div>
             <Label>POPULATION</Label>
-            <div style={{ color: "#c8c0b0", fontFamily: mono, fontSize: 11, marginBottom: 10 }}>{bloc.population}</div>
+            <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 13, marginBottom: 10 }}>{bloc.population}</div>
             <Label>CURRENCY</Label>
-            <div style={{ color: "#c8c0b0", fontFamily: mono, fontSize: 11 }}>{bloc.currency.name}</div>
-            <div style={{ color: "#666", fontFamily: mono, fontSize: 10, marginBottom: 10 }}>{bloc.currency.slang}</div>
+            <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 13 }}>{bloc.currency.name}</div>
+            <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 12, marginBottom: 10 }}>{bloc.currency.slang}</div>
             <Label>GOVERNANCE</Label>
-            <div style={{ color: "#c8c0b0", fontFamily: mono, fontSize: 11, lineHeight: 1.5, marginBottom: 10 }}>{bloc.governance}</div>
+            <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 13, lineHeight: 1.5, marginBottom: 10 }}>{bloc.governance}</div>
             <Label>IDENTITY</Label>
-            <div style={{ color: "#8a8070", fontFamily: mono, fontSize: 11, lineHeight: 1.5, marginBottom: 10 }}>{bloc.identity}</div>
+            <div style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 13, lineHeight: 1.5, marginBottom: 10 }}>{bloc.identity}</div>
             <Label>MANTRA</Label>
-            <div style={{ color: meta.color, fontFamily: mono, fontSize: 12 }}>{bloc.mantra}</div>
+            <div style={{ color: meta.color, fontFamily: mono, fontSize: 13 }}>{bloc.mantra}</div>
           </div>
           <div>
             <Label>ECONOMIC PILLARS</Label>
-            {bloc.pillars.map((p, i) => <div key={i} style={{ color: "#8a8070", fontFamily: mono, fontSize: 11, padding: "2px 0" }}>› {p}</div>)}
+            {bloc.pillars.map((p, i) => <div key={i} style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 13, padding: "2px 0" }}>› {p}</div>)}
             <div style={{ marginTop: 10 }} />
             <Label>STRATEGIC WEAKNESSES</Label>
-            {bloc.weaknesses.map((w, i) => <div key={i} style={{ color: "#a05040", fontFamily: mono, fontSize: 11, padding: "2px 0" }}>✕ {w}</div>)}
+            {bloc.weaknesses.map((w, i) => <div key={i} style={{ color: "#d07060", fontFamily: mono, fontSize: 13, padding: "2px 0" }}>✕ {w}</div>)}
             <div style={{ marginTop: 10 }} />
             <Label>INTERNAL FACTIONS</Label>
-            {bloc.factions.map((f, i) => <div key={i} style={{ color: "#6a6a7a", fontFamily: mono, fontSize: 11, padding: "2px 0" }}>· {f}</div>)}
+            {bloc.factions.map((f, i) => <div key={i} style={{ color: "#aaaabc", fontFamily: mono, fontSize: 13, padding: "2px 0" }}>· {f}</div>)}
             <div style={{ marginTop: 10 }} />
             <Label>MILITARY/SECURITY POSTURE</Label>
-            <div style={{ color: "#6a6a7a", fontFamily: mono, fontSize: 10, lineHeight: 1.5 }}>{bloc.militaryDoc}</div>
+            <div style={{ color: "#aaaabc", fontFamily: mono, fontSize: 12, lineHeight: 1.5 }}>{bloc.militaryDoc}</div>
           </div>
         </div>
       )}
@@ -634,13 +700,13 @@ function BlocDetail({ bloc }) {
             <div key={i} style={{ marginBottom: 10, borderLeft: `2px solid ${meta.color}44`, paddingLeft: 12 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
-                  <span style={{ color: meta.color, fontFamily: mono, fontSize: 10 }}>[{occ.id}]</span>
-                  <span style={{ color: "#d0c8bc", fontFamily: serif, fontSize: 14, marginLeft: 8 }}>{occ.body} — {occ.name}</span>
+                  <span style={{ color: meta.color, fontFamily: mono, fontSize: 12 }}>[{occ.id}]</span>
+                  <span style={{ color: "#e0d8cc", fontFamily: serif, fontSize: 15, marginLeft: 8 }}>{occ.body} — {occ.name}</span>
                 </div>
-                <span style={{ color: statusColor(occ.status), fontFamily: mono, fontSize: 9, letterSpacing: 1, whiteSpace: "nowrap", marginLeft: 10 }}>● {occ.status}</span>
+                <span style={{ color: statusColor(occ.status), fontFamily: mono, fontSize: 11, letterSpacing: 1, whiteSpace: "nowrap", marginLeft: 10 }}>● {occ.status}</span>
               </div>
-              <div style={{ color: "#8a8070", fontFamily: mono, fontSize: 11, marginTop: 3 }}>{occ.purpose}</div>
-              <div style={{ color: "#555", fontFamily: mono, fontSize: 10, marginTop: 3, lineHeight: 1.5 }}>⚑ {occ.notes}</div>
+              <div style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 13, marginTop: 3 }}>{occ.purpose}</div>
+              <div style={{ color: "#a0a0a0", fontFamily: mono, fontSize: 12, marginTop: 3, lineHeight: 1.5 }}>⚑ {occ.notes}</div>
             </div>
           ))}
         </div>
@@ -652,10 +718,10 @@ function BlocDetail({ bloc }) {
           {bloc.conflicts.map((c, i) => (
             <div key={i} style={{ marginBottom: 10, display: "grid", gridTemplateColumns: "1fr auto", gap: 12, alignItems: "start", borderBottom: "1px solid rgba(255,255,255,0.04)", paddingBottom: 10 }}>
               <div>
-                <div style={{ color: "#c8c0b0", fontFamily: mono, fontSize: 12 }}>{c.zone}</div>
-                <div style={{ color: "#6a6070", fontFamily: mono, fontSize: 11, marginTop: 2 }}>{c.nature}</div>
+                <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 13 }}>{c.zone}</div>
+                <div style={{ color: "#aaa8b0", fontFamily: mono, fontSize: 13, marginTop: 2 }}>{c.nature}</div>
               </div>
-              <div style={{ color: riskColor(c.risk), fontFamily: mono, fontSize: 10, textAlign: "right", whiteSpace: "nowrap" }}>
+              <div style={{ color: riskColor(c.risk), fontFamily: mono, fontSize: 12, textAlign: "right", whiteSpace: "nowrap" }}>
                 RISK: {c.risk}
               </div>
             </div>
@@ -674,18 +740,18 @@ function GravityTable() {
     <div>
       <Label style={{ marginBottom: 12 }}>IHC G-BAND CLASSIFICATION · LTAM CROSS-GRAVITY COMPATIBILITY FRAMEWORK</Label>
       <div style={{ overflowX: "auto" }}>
-        <table style={{ borderCollapse: "collapse", width: "100%", fontFamily: mono, fontSize: 11 }}>
+        <table style={{ borderCollapse: "collapse", width: "100%", fontFamily: mono, fontSize: 13 }}>
           <thead>
             <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
               {["Band", "Range", "Native Populations", "Inward Travel (→G1)", "Outward Travel (→G5)"].map(h => (
-                <th key={h} style={{ padding: "8px 12px", color: "#555", fontSize: 9, letterSpacing: 2, textAlign: "left", fontWeight: "normal" }}>{h}</th>
+                <th key={h} style={{ padding: "8px 12px", color: "#a0a0a0", fontSize: 11, letterSpacing: 2, textAlign: "left", fontWeight: "normal" }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {GBAND_TABLE.map((row, i) => {
               const isOpen = sel === row.band;
-              const bandColor = ["#4a9eff","#a060e0","#f0a030","#e05a3a","#888"][i];
+              const bandColor = ["#50c8ff","#f0a030","#f0a030","#e05a3a","#b0b0b0"][i];
               return (
                 <>
                   <tr key={row.band} onClick={() => setSel(isOpen ? null : row.band)}
@@ -693,20 +759,20 @@ function GravityTable() {
                     <td style={{ padding: "10px 12px" }}>
                       <span style={{ color: bandColor, fontWeight: 600 }}>{row.band}</span>
                     </td>
-                    <td style={{ padding: "10px 12px", color: "#c8c0b0" }}>{row.range}</td>
-                    <td style={{ padding: "10px 12px", color: "#8a8070" }}>{row.natives}</td>
-                    <td style={{ padding: "10px 12px", color: row.inward.toLowerCase().includes("prohibit") || row.inward.toLowerCase().includes("severe") ? "#e05a3a" : row.inward.toLowerCase().includes("restrict") ? "#f0a030" : "#40c8a0" }}>
+                    <td style={{ padding: "10px 12px", color: "#d8d0c0" }}>{row.range}</td>
+                    <td style={{ padding: "10px 12px", color: "#b8b0a8" }}>{row.natives}</td>
+                    <td style={{ padding: "10px 12px", color: row.inward.toLowerCase().includes("prohibit") ? C.rProhib : row.inward.toLowerCase().includes("severe") ? C.rHigh : row.inward.toLowerCase().includes("restrict") ? C.rMedH : row.inward.toLowerCase().includes("medic") ? C.rMed : C.rNone }}>
                       {row.inward.split(" — ")[0]}
                     </td>
-                    <td style={{ padding: "10px 12px", color: "#40c8a0" }}>{row.outward.split(" — ")[0]}</td>
+                    <td style={{ padding: "10px 12px", color: row.outwardLevel === "easy" ? C.rNone : C.rLow }}>{row.outward.split(" — ")[0]}</td>
                   </tr>
                   {isOpen && (
                     <tr key={`${row.band}-detail`}>
                       <td colSpan={5} style={{ padding: "0 12px 14px 24px", background: "rgba(0,0,0,0.2)" }}>
-                        <div style={{ color: "#8a8070", fontFamily: mono, fontSize: 11, lineHeight: 1.6, borderLeft: `2px solid ${bandColor}44`, paddingLeft: 12, marginTop: 8 }}>
-                          <div style={{ marginBottom: 6 }}><span style={{ color: "#555" }}>BASELINE: </span>{row.baseline}</div>
-                          <div style={{ marginBottom: 4 }}><span style={{ color: "#555" }}>INWARD: </span>{row.inward}</div>
-                          <div><span style={{ color: "#555" }}>OUTWARD: </span>{row.outward}</div>
+                        <div style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 13, lineHeight: 1.6, borderLeft: `2px solid ${bandColor}44`, paddingLeft: 12, marginTop: 8 }}>
+                          <div style={{ marginBottom: 6 }}><span style={{ color: "#a0a0a0" }}>BASELINE: </span>{row.baseline}</div>
+                          <div style={{ marginBottom: 4 }}><span style={{ color: "#a0a0a0" }}>INWARD: </span>{row.inward}</div>
+                          <div><span style={{ color: "#a0a0a0" }}>OUTWARD: </span>{row.outward}</div>
                         </div>
                       </td>
                     </tr>
@@ -728,9 +794,9 @@ function GravityTable() {
             { name: "SynaptAlign Modulators", use: "Neural vestibular recalibration" },
             { name: "VascuFlow Regulators", use: "Vascular blood pooling prevention" },
           ].map(m => (
-            <div key={m.name} style={{ borderLeft: "2px solid rgba(74,158,255,0.3)", paddingLeft: 8 }}>
-              <div style={{ color: "#4a9eff", fontFamily: mono, fontSize: 10 }}>{m.name}</div>
-              <div style={{ color: "#555", fontFamily: mono, fontSize: 10, marginTop: 1 }}>{m.use}</div>
+            <div key={m.name} style={{ borderLeft: "2px solid rgba(80,200,255,0.3)", paddingLeft: 8 }}>
+              <div style={{ color: "#50c8ff", fontFamily: mono, fontSize: 12 }}>{m.name}</div>
+              <div style={{ color: "#a0a0a0", fontFamily: mono, fontSize: 12, marginTop: 1 }}>{m.use}</div>
             </div>
           ))}
         </div>
@@ -762,20 +828,20 @@ function MobilityPanel() {
       <div style={{ marginBottom: 16 }}>
         {rows.map((r, i) => (
           <div key={i} style={{ display: "grid", gridTemplateColumns: "140px 110px 120px 1fr", gap: 12, padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.04)", alignItems: "start" }}>
-            <div style={{ color: "#c8c0b0", fontFamily: mono, fontSize: 11 }}>{r.route}</div>
-            <div style={{ color: "#666", fontFamily: mono, fontSize: 10 }}>{r.direction}</div>
-            <div style={{ color: riskColor(r.friction), fontFamily: mono, fontSize: 10 }}>{r.friction}</div>
-            <div style={{ color: "#6a6070", fontFamily: mono, fontSize: 10, lineHeight: 1.5 }}>{r.notes}</div>
+            <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 13 }}>{r.route}</div>
+            <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 12 }}>{r.direction}</div>
+            <div style={{ color: riskColor(r.friction), fontFamily: mono, fontSize: 12 }}>{r.friction}</div>
+            <div style={{ color: "#aaa8b0", fontFamily: mono, fontSize: 12, lineHeight: 1.5 }}>{r.notes}</div>
           </div>
         ))}
       </div>
       <Label style={{ marginBottom: 10 }}>SPECIAL PROVISIONS & EXEMPTIONS</Label>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 8 }}>
         {specials.map(s => (
-          <div key={s.id} style={{ border: "1px solid rgba(74,158,255,0.15)", borderTop: "2px solid rgba(74,158,255,0.4)", padding: "10px 12px", borderRadius: 2 }}>
-            <div style={{ color: "#4a9eff", fontFamily: mono, fontSize: 10, letterSpacing: 1 }}>{s.id}</div>
-            <div style={{ color: "#c8c0b0", fontFamily: serif, fontSize: 13, marginTop: 2 }}>{s.name}</div>
-            <div style={{ color: "#666", fontFamily: mono, fontSize: 10, marginTop: 6, lineHeight: 1.5 }}>{s.note}</div>
+          <div key={s.id} style={{ border: "1px solid rgba(80,200,255,0.15)", borderTop: "2px solid rgba(80,200,255,0.4)", padding: "10px 12px", borderRadius: 2 }}>
+            <div style={{ color: "#50c8ff", fontFamily: mono, fontSize: 12, letterSpacing: 1 }}>{s.id}</div>
+            <div style={{ color: "#d8d0c0", fontFamily: serif, fontSize: 14, marginTop: 2 }}>{s.name}</div>
+            <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>{s.note}</div>
           </div>
         ))}
       </div>
@@ -800,25 +866,25 @@ function TreatyRow({ t }) {
     <div style={{ border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, marginBottom: 8, overflow: "hidden" }}>
       <div onClick={() => setOpen(!open)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", cursor: "pointer", background: "rgba(255,255,255,0.02)" }}>
         <div>
-          <span style={{ fontFamily: mono, color: "#4a9eff", fontSize: 11, letterSpacing: 1 }}>[{t.id}]</span>
-          <span style={{ color: "#e8e4dc", fontSize: 14, fontFamily: serif, marginLeft: 10 }}>{t.name}</span>
-          <span style={{ color: "#444", fontFamily: mono, fontSize: 9, marginLeft: 10 }}>{t.type}</span>
+          <span style={{ fontFamily: mono, color: "#50c8ff", fontSize: 13, letterSpacing: 1 }}>[{t.id}]</span>
+          <span style={{ color: "#f0ece4", fontSize: 15, fontFamily: serif, marginLeft: 10 }}>{t.name}</span>
+          <span style={{ color: "#909090", fontFamily: mono, fontSize: 11, marginLeft: 10 }}>{t.type}</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ color: "#40c8a0", fontSize: 9, fontFamily: mono, letterSpacing: 1 }}>● {t.status}</span>
-          <span style={{ color: "#555", fontSize: 11 }}>{open ? "▲" : "▼"}</span>
+          <span style={{ color: statusColor(t.status), fontSize: 11, fontFamily: mono, letterSpacing: 1 }}>● {t.status}</span>
+          <span style={{ color: "#a0a0a0", fontSize: 13 }}>{open ? "▲" : "▼"}</span>
         </div>
       </div>
       {open && (
         <div style={{ padding: "0 16px 14px", background: "rgba(0,0,0,0.2)" }}>
-          <div style={{ color: "#8a8070", fontFamily: mono, fontSize: 11, lineHeight: 1.6, marginBottom: 8 }}>{t.purpose}</div>
+          <div style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 13, lineHeight: 1.6, marginBottom: 8 }}>{t.purpose}</div>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 8 }}>
             {t.parties.map(p => {
               const b = BLOC_META[p];
-              return <span key={p} style={{ color: b?.color || "#888", fontFamily: mono, fontSize: 10, border: `1px solid ${b?.color || "#555"}33`, padding: "2px 6px", borderRadius: 2 }}>{p}</span>;
+              return <span key={p} style={{ color: b?.color || "#b0b0b0", fontFamily: mono, fontSize: 12, border: `1px solid ${b?.color || "#a0a0a0"}33`, padding: "2px 6px", borderRadius: 2 }}>{p}</span>;
             })}
           </div>
-          <div style={{ color: "#555", fontFamily: mono, fontSize: 10, borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 8 }}>⚑ {t.notes}</div>
+          <div style={{ color: "#a0a0a0", fontFamily: mono, fontSize: 12, borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 8 }}>⚑ {t.notes}</div>
         </div>
       )}
     </div>
@@ -862,7 +928,7 @@ const AGENCIES = [
     interagency: "INA (navigation timestamps), IFE (transaction timestamp integrity), ISA (research data timestamping), IHC (emergency broadcast protocols), IJC (legal timestamp verification).",
     treatiesToAdminister: "Helion Relay Network Accord (HRNA), Deep-Space Signal Standards Convention (DSSC)",
     offices: [{ code: "ICC-EL2", loc: "Earth–Luna L2, TLC", note: "Primary HQ · HRN Master Array, Timestamp Core, Laser Comms" }, { code: "ICCO–Mars", loc: "Mars Orbit", note: "Mid-system comms, Mars Relay Arc, HRN sync" }, { code: "ICCO–Ceres", loc: "Ceres, Belt", note: "Belt antenna calibration, frequency audits, timestamp integrity" }, { code: "ICCO–Ganymede", loc: "Ganymede, JFA", note: "Long-baseline arrays, deep-space targeting" }, { code: "ICCO–FarReach", loc: "FarReach Gateway", note: "TKOS uplinks, frontier latency, scientific telemetry" }],
-    color: "#40c8a0",
+    color: "#c8a860",
   },
   {
     id: "IEA", name: "Interplanetary Environmental Alliance", type: "Environmental Oversight Authority",
@@ -1079,7 +1145,7 @@ function SearchPanel({ query, setQuery }) {
     // G-Bands
     GBAND_TABLE.forEach((g, gi) => {
       if ([g.band, g.range, g.natives, g.baseline, g.inward, g.outward].some(s => s.toLowerCase().includes(q))) {
-        results.push({ type: "G-Band", id: g.band, title: `${g.band} (${g.range})`, subtitle: g.natives, color: ["#4a9eff","#a060e0","#f0a030","#e05a3a","#888"][gi] });
+        results.push({ type: "G-Band", id: g.band, title: `${g.band} (${g.range})`, subtitle: g.natives, color: ["#50c8ff","#f0a030","#f0a030","#e05a3a","#b0b0b0"][gi] });
       }
     });
 
@@ -1109,28 +1175,54 @@ function SearchPanel({ query, setQuery }) {
   return (
     <div style={{ position: "relative" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 2, padding: "8px 14px" }}>
-        <span style={{ color: "#4a9eff", fontFamily: mono, fontSize: 12 }}>⌕</span>
+        <span style={{ color: "#50c8ff", fontFamily: mono, fontSize: 13 }}>⌕</span>
         <input value={query} onChange={e => setQuery(e.target.value)}
           placeholder="Search blocs, OCCs, treaties, agencies, G-bands, vernacular..."
-          style={{ background: "transparent", border: "none", outline: "none", color: "#c8c0b0", fontFamily: mono, fontSize: 12, width: "100%" }} />
-        {query && <button onClick={() => setQuery("")} style={{ background: "transparent", border: "none", color: "#444", cursor: "pointer", fontFamily: mono, fontSize: 12 }}>✕</button>}
+          style={{ background: "transparent", border: "none", outline: "none", color: "#d8d0c0", fontFamily: mono, fontSize: 13, width: "100%" }} />
+        {query && <button onClick={() => setQuery("")} style={{ background: "transparent", border: "none", color: "#909090", cursor: "pointer", fontFamily: mono, fontSize: 13 }}>✕</button>}
       </div>
       {allResults.length > 0 && (
         <div style={{ marginTop: 8, border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden" }}>
           {allResults.map((r, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderBottom: "1px solid rgba(255,255,255,0.04)", background: "rgba(0,0,0,0.3)" }}>
-              <span style={{ color: r.color, fontFamily: mono, fontSize: 9, letterSpacing: 1, minWidth: 72 }}>{r.type.toUpperCase()}</span>
+              <span style={{ color: r.color, fontFamily: mono, fontSize: 11, letterSpacing: 1, minWidth: 72 }}>{r.type.toUpperCase()}</span>
               <div>
-                <div style={{ color: "#c8c0b0", fontFamily: mono, fontSize: 12 }}>{r.title}</div>
-                <div style={{ color: "#555", fontFamily: mono, fontSize: 10, marginTop: 1 }}>{r.subtitle}</div>
+                <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 13 }}>{r.title}</div>
+                <div style={{ color: "#a0a0a0", fontFamily: mono, fontSize: 12, marginTop: 1 }}>{r.subtitle}</div>
               </div>
             </div>
           ))}
         </div>
       )}
       {query.length >= 2 && allResults.length === 0 && (
-        <div style={{ marginTop: 8, padding: "10px 14px", border: "1px solid rgba(255,255,255,0.06)", color: "#444", fontFamily: mono, fontSize: 11 }}>
+        <div style={{ marginTop: 8, padding: "10px 14px", border: "1px solid rgba(255,255,255,0.06)", color: "#909090", fontFamily: mono, fontSize: 13 }}>
           No results found for "{query}"
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── TECH TREATY ROW ──────────────────────────────────────────────────────────
+
+function TechTreatyRow({ t, group }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderBottom: "1px solid rgba(255,255,255,0.03)", overflow: "hidden" }}>
+      <div onClick={() => setOpen(!open)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 10px 10px 20px", cursor: "pointer", background: open ? "rgba(255,255,255,0.03)" : "transparent" }}>
+        <div>
+          <span style={{ color: group.color, fontFamily: mono, fontSize: 12 }}>[{t.id}]</span>
+          <span style={{ color: "#d0c8b8", fontFamily: serif, fontSize: 14, marginLeft: 10 }}>{t.name}</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ color: C.stable, fontSize: 11, fontFamily: mono, letterSpacing: 1 }}>● Active</span>
+          <span style={{ color: "#909090", fontSize: 11 }}>{open ? "▲" : "▼"}</span>
+        </div>
+      </div>
+      {open && (
+        <div style={{ padding: "6px 16px 12px 20px", background: "rgba(0,0,0,0.15)" }}>
+          <div style={{ color: "#a0a0a0", fontFamily: mono, fontSize: 12, lineHeight: 1.6, marginBottom: 6 }}>{t.scope}</div>
+          <div style={{ color: "#888898", fontFamily: mono, fontSize: 11, borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 6 }}>⚑ Administered by {group.agencyName}</div>
         </div>
       )}
     </div>
@@ -1161,7 +1253,7 @@ function BlocComparison() {
 
   return (
     <div>
-      <div style={{ color: "#333", fontSize: 9, letterSpacing: 2, marginBottom: 16 }}>SIDE-BY-SIDE BLOC COMPARISON · SELECT TWO BLOCS</div>
+      <div style={{ color: "#888898", fontSize: 11, letterSpacing: 2, marginBottom: 16 }}>SIDE-BY-SIDE BLOC COMPARISON · SELECT TWO BLOCS</div>
 
       {/* Selector row */}
       <div style={{ display: "flex", gap: 16, marginBottom: 20, flexWrap: "wrap", alignItems: "flex-start" }}>
@@ -1175,7 +1267,7 @@ function BlocComparison() {
                   background: val === b.id ? BLOC_META[b.id].color : "transparent",
                   border: `1px solid ${BLOC_META[b.id].color}`,
                   color: val === b.id ? "#060810" : BLOC_META[b.id].color,
-                  fontFamily: mono, fontSize: 10, padding: "4px 12px", borderRadius: 2,
+                  fontFamily: mono, fontSize: 12, padding: "4px 12px", borderRadius: 2,
                   cursor: b.id === other ? "not-allowed" : "pointer",
                   opacity: b.id === other ? 0.25 : 1, fontWeight: 600, letterSpacing: 1,
                 }}>{b.id}</button>
@@ -1188,9 +1280,9 @@ function BlocComparison() {
       {/* Tension strip */}
       {tension && (
         <div style={{ marginBottom: 16, padding: "10px 14px", border: `1px solid ${tensionColor(tension.level)}44`, borderLeft: `3px solid ${tensionColor(tension.level)}`, borderRadius: 2, background: `${tensionColor(tension.level)}06`, display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
-          <div style={{ fontFamily: mono, fontSize: 9, letterSpacing: 2, color: "#555" }}>CURRENT TENSION</div>
-          <div style={{ color: tensionColor(tension.level), fontFamily: mono, fontSize: 11, fontWeight: 600 }}>LEVEL {tension.level} — {tension.label.toUpperCase()}</div>
-          <div style={{ color: "#6a6070", fontFamily: mono, fontSize: 10, lineHeight: 1.5 }}>{tension.note}</div>
+          <div style={{ fontFamily: mono, fontSize: 11, letterSpacing: 2, color: "#a0a0a0" }}>CURRENT TENSION</div>
+          <div style={{ color: tensionColor(tension.level), fontFamily: mono, fontSize: 13, fontWeight: 600 }}>LEVEL {tension.level} — {tension.label.toUpperCase()}</div>
+          <div style={{ color: "#aaa8b0", fontFamily: mono, fontSize: 12, lineHeight: 1.5 }}>{tension.note}</div>
         </div>
       )}
 
@@ -1200,8 +1292,8 @@ function BlocComparison() {
           <div style={{ padding: "8px 12px", background: "rgba(255,255,255,0.02)" }} />
           {[{ bloc: A, m: mA }, { bloc: B, m: mB }].map(({ bloc, m }) => (
             <div key={bloc.id} style={{ padding: "10px 14px", borderLeft: "1px solid rgba(255,255,255,0.05)", borderBottom: "1px solid rgba(255,255,255,0.05)", background: `${m.accent}88` }}>
-              <span style={{ color: m.color, fontFamily: mono, fontSize: 10, letterSpacing: 1 }}>{bloc.id}</span>
-              <div style={{ color: "#d0c8bc", fontFamily: serif, fontSize: 14, marginTop: 2 }}>{bloc.name}</div>
+              <span style={{ color: m.color, fontFamily: mono, fontSize: 12, letterSpacing: 1 }}>{bloc.id}</span>
+              <div style={{ color: "#e0d8cc", fontFamily: serif, fontSize: 15, marginTop: 2 }}>{bloc.name}</div>
             </div>
           ))}
         </div>
@@ -1210,8 +1302,8 @@ function BlocComparison() {
             <div style={{ padding: "9px 12px", background: "rgba(255,255,255,0.01)" }}>
               <Label style={{ marginBottom: 0 }}>{r.label}</Label>
             </div>
-            <div style={{ padding: "9px 14px", borderLeft: "1px solid rgba(255,255,255,0.04)", color: "#a0988a", fontFamily: mono, fontSize: 10, lineHeight: 1.5 }}>{r.a}</div>
-            <div style={{ padding: "9px 14px", borderLeft: "1px solid rgba(255,255,255,0.04)", color: "#a0988a", fontFamily: mono, fontSize: 10, lineHeight: 1.5 }}>{r.b}</div>
+            <div style={{ padding: "9px 14px", borderLeft: "1px solid rgba(255,255,255,0.04)", color: "#c8bfb0", fontFamily: mono, fontSize: 12, lineHeight: 1.5 }}>{r.a}</div>
+            <div style={{ padding: "9px 14px", borderLeft: "1px solid rgba(255,255,255,0.04)", color: "#c8bfb0", fontFamily: mono, fontSize: 12, lineHeight: 1.5 }}>{r.b}</div>
           </div>
         ))}
       </div>
@@ -1220,11 +1312,11 @@ function BlocComparison() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         {[{ bloc: A, m: mA }, { bloc: B, m: mB }].map(({ bloc, m }) => (
           <div key={bloc.id} style={{ border: `1px solid ${m.color}33`, borderTop: `2px solid ${m.color}`, borderRadius: 2, padding: 12 }}>
-            <div style={{ color: m.color, fontFamily: mono, fontSize: 10, marginBottom: 10 }}>{bloc.id} · ECONOMIC PROFILE</div>
+            <div style={{ color: m.color, fontFamily: mono, fontSize: 12, marginBottom: 10 }}>{bloc.id} · ECONOMIC PROFILE</div>
             <Label style={{ marginBottom: 4 }}>PILLARS</Label>
-            {bloc.pillars.map((p, i) => <div key={i} style={{ color: "#6a6070", fontFamily: mono, fontSize: 10, padding: "2px 0" }}>› {p}</div>)}
+            {bloc.pillars.map((p, i) => <div key={i} style={{ color: "#aaa8b0", fontFamily: mono, fontSize: 12, padding: "2px 0" }}>› {p}</div>)}
             <Label style={{ marginTop: 10, marginBottom: 4 }}>WEAKNESSES</Label>
-            {bloc.weaknesses.map((w, i) => <div key={i} style={{ color: "#a05040", fontFamily: mono, fontSize: 10, padding: "2px 0" }}>✕ {w}</div>)}
+            {bloc.weaknesses.map((w, i) => <div key={i} style={{ color: "#d07060", fontFamily: mono, fontSize: 12, padding: "2px 0" }}>✕ {w}</div>)}
           </div>
         ))}
       </div>
@@ -1248,12 +1340,13 @@ const TABS = [
 export default function Dashboard() {
   const [tab, setTab] = useState("map");
   const [selectedBloc, setSelectedBloc] = useState(null);
+  const [selectedZone, setSelectedZone] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [agencySel, setAgencySel] = useState(null);
   const [cultureSel, setCultureSel] = useState("TLC");
 
   return (
-    <div style={{ minHeight: "100vh", background: "#060810", color: "#c8c0b0", fontFamily: mono, padding: "0 0 80px" }}>
+    <div style={{ minHeight: "100vh", background: "#060810", color: "#d8d0c0", fontFamily: mono, padding: "0 0 80px" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1268,21 +1361,21 @@ export default function Dashboard() {
       <div style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", padding: "20px 28px 0", background: "#04060c" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 18 }}>
           <div>
-            <div style={{ color: "#4a9eff", fontSize: 9, letterSpacing: 4, marginBottom: 5 }}>INTERPLANETARY ASSEMBLY · INFORMATION SYSTEMS DIVISION · NODE IA-CERES-07</div>
-            <div style={{ fontFamily: serif, fontSize: 26, color: "#e8e4dc", letterSpacing: 0.5 }}>Solar System Registry Terminal</div>
-            <div style={{ color: "#2a2a3a", fontSize: 9, marginTop: 4, letterSpacing: 1 }}>STATUS: NOMINAL · CYCLE: 2847.4 SOL · SMIF CLEARANCE: STANDARD · LTAM CERT: CURRENT</div>
+            <div style={{ color: "#50c8ff", fontSize: 11, letterSpacing: 4, marginBottom: 5 }}>INTERPLANETARY ASSEMBLY · INFORMATION SYSTEMS DIVISION · NODE IA-CERES-07</div>
+            <div style={{ fontFamily: serif, fontSize: 26, color: "#f0ece4", letterSpacing: 0.5 }}>Solar System Registry Terminal</div>
+            <div style={{ color: "#888898", fontSize: 11, marginTop: 4, letterSpacing: 1 }}>STATUS: NOMINAL · CYCLE: 2847.4 SOL · SMIF CLEARANCE: STANDARD · LTAM CERT: CURRENT</div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             {[
-              { label: "BLOCS",         value: "5",  color: "#4a9eff" },
-              { label: "AGENCIES",      value: "10", color: "#40c8a0" },
-              { label: "TREATIES",      value: "6",  color: "#f0a030" },
-              { label: "TECH TREATIES", value: "19", color: "#c8a040" },
-              { label: "ACTIVE OCCS",   value: "20", color: "#a060e0" },
+              { label: "BLOCS",         value: "5",  color: "#50c8ff" },
+              { label: "AGENCIES",      value: "10", color: "#50c8ff" },
+              { label: "TREATIES",      value: "6",  color: "#50c8ff" },
+              { label: "TECH TREATIES", value: "19", color: "#50c8ff" },
+              { label: "ACTIVE OCCS",   value: "20", color: "#50c8ff" },
             ].map(s => (
               <div key={s.label} style={{ textAlign: "center", border: "1px solid rgba(255,255,255,0.05)", padding: "8px 12px", borderTop: `2px solid ${s.color}` }}>
-                <div style={{ color: s.color, fontSize: 18, fontFamily: serif }}>{s.value}</div>
-                <div style={{ color: "#333", fontSize: 8, letterSpacing: 2 }}>{s.label}</div>
+                <div style={{ color: s.color, fontSize: 19, fontFamily: serif }}>{s.value}</div>
+                <div style={{ color: "#888898", fontSize: 8, letterSpacing: 2 }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -1293,9 +1386,9 @@ export default function Dashboard() {
           {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)} style={{
               background: "transparent", border: "none",
-              borderBottom: tab === t.id ? "2px solid #4a9eff" : "2px solid transparent",
-              color: tab === t.id ? "#4a9eff" : "#444",
-              fontFamily: mono, fontSize: 9, letterSpacing: 2,
+              borderBottom: tab === t.id ? "2px solid #50c8ff" : "2px solid transparent",
+              color: tab === t.id ? "#50c8ff" : "#909090",
+              fontFamily: mono, fontSize: 11, letterSpacing: 2,
               padding: "10px 16px", cursor: "pointer", whiteSpace: "nowrap",
             }}>{t.label}</button>
           ))}
@@ -1308,16 +1401,21 @@ export default function Dashboard() {
         {/* SYSTEM MAP */}
         {tab === "map" && (
           <div>
-            <SystemMap onSelectBloc={setSelectedBloc} selectedBloc={selectedBloc} />
+            <SystemMap onSelectBloc={setSelectedBloc} selectedBloc={selectedBloc} onZoneChange={setSelectedZone} selectedZone={selectedZone} />
             <TradeDependencyPanel />
-            {selectedBloc && (
+            {selectedZone && (
+              <div style={{ marginTop: 16 }}>
+                <ZoneDetail zone={ZONE_NODES.find(z => z.id === selectedZone)} />
+              </div>
+            )}
+            {selectedBloc && !selectedZone && (
               <div style={{ marginTop: 16 }}>
                 <BlocDetail bloc={BLOCS.find(b => b.id === selectedBloc)} />
               </div>
             )}
-            {!selectedBloc && (
-              <div style={{ marginTop: 0, color: "#2a2a3a", fontFamily: mono, fontSize: 9, textAlign: "center", padding: "16px", border: "1px dashed rgba(255,255,255,0.03)", borderRadius: 2 }}>
-                SELECT A BLOC NODE IN THE SCHEMATIC ABOVE TO LOAD FULL DOSSIER
+            {!selectedBloc && !selectedZone && (
+              <div style={{ marginTop: 0, color: "#888898", fontFamily: mono, fontSize: 11, textAlign: "center", padding: "16px", border: "1px dashed rgba(255,255,255,0.03)", borderRadius: 2 }}>
+                SELECT A BLOC NODE OR ZONE IN THE SCHEMATIC ABOVE TO LOAD FULL DOSSIER
               </div>
             )}
           </div>
@@ -1329,15 +1427,15 @@ export default function Dashboard() {
         {/* TREATIES */}
         {tab === "treaties" && (
           <div>
-            <div style={{ color: "#333", fontSize: 9, letterSpacing: 2, marginBottom: 4 }}>POLITICAL & DIPLOMATIC INSTRUMENTS · IA CUSTODY · DIRECT INTER-BLOC APPLICATION</div>
-            <div style={{ color: "#2a2a3a", fontFamily: mono, fontSize: 9, marginBottom: 14, lineHeight: 1.6 }}>
+            <div style={{ color: "#888898", fontSize: 11, letterSpacing: 2, marginBottom: 4 }}>POLITICAL & DIPLOMATIC INSTRUMENTS · IA CUSTODY · DIRECT INTER-BLOC APPLICATION</div>
+            <div style={{ color: "#888898", fontFamily: mono, fontSize: 11, marginBottom: 14, lineHeight: 1.6 }}>
               These are multilateral agreements between blocs, deposited with and custodied by the Interplanetary Assembly. They govern political relationships, frontier access, mobility, and monetary interoperability directly.
             </div>
             {TREATIES.map(t => <TreatyRow key={t.id} t={t} />)}
 
             <div style={{ marginTop: 24, marginBottom: 4 }}>
-              <div style={{ color: "#333", fontSize: 9, letterSpacing: 2, marginBottom: 4 }}>AGENCY-ADMINISTERED TECHNICAL TREATIES · DEPOSITED AT IA · ADMINISTERED BY SPECIALISED AGENCIES</div>
-              <div style={{ color: "#2a2a3a", fontFamily: mono, fontSize: 9, marginBottom: 14, lineHeight: 1.6 }}>
+              <div style={{ color: "#888898", fontSize: 11, letterSpacing: 2, marginBottom: 4 }}>AGENCY-ADMINISTERED TECHNICAL TREATIES · DEPOSITED AT IA · ADMINISTERED BY SPECIALISED AGENCIES</div>
+              <div style={{ color: "#888898", fontFamily: mono, fontSize: 11, marginBottom: 14, lineHeight: 1.6 }}>
                 These are technical, scientific, environmental, health, financial, and trade instruments. Deposited with the IA for legitimacy and archival custody, but day-to-day administration delegated to the relevant specialised agency. They constitute binding interplanetary law within their domains.
               </div>
             </div>
@@ -1349,7 +1447,7 @@ export default function Dashboard() {
                 { id: "IEIC", name: "Industrial Environmental Impact Compact", scope: "Environmental compliance obligations for all major extractive operations system-wide." },
                 { id: "CRIA", name: "Cryo-Region Integrity Accord",            scope: "Protects cryogenic regions from contamination and habitat encroachment." },
               ]},
-              { agency: "ISA", agencyName: "Interplanetary Scientific Authority", color: "#a060e0", treaties: [
+              { agency: "ISA", agencyName: "Interplanetary Scientific Authority", color: "#f0a030", treaties: [
                 { id: "SAPC",  name: "Scientific Access & Protection Charter",       scope: "Governs research permissions, celestial body access rights, and sample quotas system-wide." },
                 { id: "HLASC", name: "High-Risk Laboratory Safety Convention",       scope: "Safety standards for high-energy experiments, reactor-adjacent research, and cryogenic microbe studies." },
                 { id: "TCBA",  name: "Titan & Cryogenic Biosignature Accord",        scope: "Protects Titan and Enceladus prebiotic chemistry zones from contamination and exploitative access." },
@@ -1372,23 +1470,19 @@ export default function Dashboard() {
             ].map(group => (
               <div key={group.agency} style={{ marginBottom: 16 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, padding: "6px 10px", background: "rgba(255,255,255,0.02)", borderRadius: 2 }}>
-                  <span style={{ color: group.color, fontFamily: mono, fontSize: 10, letterSpacing: 1 }}>{group.agency}</span>
-                  <span style={{ color: "#555", fontFamily: mono, fontSize: 9 }}>{group.agencyName}</span>
+                  <span style={{ color: group.color, fontFamily: mono, fontSize: 12, letterSpacing: 1 }}>{group.agency}</span>
+                  <span style={{ color: "#a0a0a0", fontFamily: mono, fontSize: 11 }}>{group.agencyName}</span>
                 </div>
-                {group.treaties.map(t => (
-                  <div key={t.id} style={{ display: "grid", gridTemplateColumns: "80px 220px 1fr", gap: 12, padding: "8px 10px 8px 20px", borderBottom: "1px solid rgba(255,255,255,0.03)", alignItems: "start" }}>
-                    <span style={{ color: group.color, fontFamily: mono, fontSize: 10 }}>[{t.id}]</span>
-                    <span style={{ color: "#c0b8a8", fontFamily: serif, fontSize: 13 }}>{t.name}</span>
-                    <span style={{ color: "#555", fontFamily: mono, fontSize: 10, lineHeight: 1.5 }}>{t.scope}</span>
-                  </div>
+              {group.treaties.map(t => (
+                  <TechTreatyRow key={t.id} t={t} group={group} />
                 ))}
               </div>
             ))}
 
             <div style={{ marginTop: 20, padding: "14px 16px", border: "1px dashed rgba(255,255,255,0.06)", borderRadius: 2 }}>
-              <div style={{ color: "#333", fontSize: 9, letterSpacing: 2, marginBottom: 8 }}>IA DEPOSITED TREATY REGISTER — RESERVED ENTRIES (PENDING MULTILATERAL FRAMEWORK)</div>
+              <div style={{ color: "#888898", fontSize: 11, letterSpacing: 2, marginBottom: 8 }}>IA DEPOSITED TREATY REGISTER — RESERVED ENTRIES (PENDING MULTILATERAL FRAMEWORK)</div>
               {["Terraforming Ethics Charter (multilateral political version — separate from IEA's TEC technical instrument)", "Cryo-Biome Preservation Convention", "High-Energy Propulsion Safety Accord", "Outer Ice Access Compact"].map(r => (
-                <div key={r} style={{ color: "#333", fontSize: 10, padding: "3px 0", fontFamily: mono }}>○ {r}</div>
+                <div key={r} style={{ color: "#888898", fontSize: 12, padding: "3px 0", fontFamily: mono }}>○ {r}</div>
               ))}
             </div>
           </div>
@@ -1397,55 +1491,55 @@ export default function Dashboard() {
         {/* AGENCIES */}
         {tab === "agencies" && (
           <div>
-            <div style={{ color: "#333", fontSize: 9, letterSpacing: 2, marginBottom: 16 }}>IA SPECIALISED AGENCIES & TKA SECRETARIAT · CLICK TO EXPAND</div>
+            <div style={{ color: "#888898", fontSize: 11, letterSpacing: 2, marginBottom: 16 }}>IA SPECIALISED AGENCIES & TKA SECRETARIAT · CLICK TO EXPAND</div>
             {AGENCIES.map(a => {
               const isOpen = agencySel === a.id;
               return (
                 <div key={a.id} style={{ marginBottom: 8, border: `1px solid ${isOpen ? a.color + "55" : "rgba(255,255,255,0.06)"}`, borderTop: `2px solid ${isOpen ? a.color : a.color + "33"}`, borderRadius: 2, overflow: "hidden" }}>
                   <div onClick={() => setAgencySel(isOpen ? null : a.id)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", cursor: "pointer", background: isOpen ? `rgba(0,0,0,0.25)` : "rgba(255,255,255,0.01)" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <span style={{ color: a.color, fontFamily: mono, fontSize: 11, letterSpacing: 1, minWidth: 40 }}>{a.id}</span>
+                      <span style={{ color: a.color, fontFamily: mono, fontSize: 13, letterSpacing: 1, minWidth: 40 }}>{a.id}</span>
                       <div>
-                        <div style={{ color: "#d0c8bc", fontFamily: serif, fontSize: 15 }}>{a.name}</div>
-                        <div style={{ color: "#444", fontFamily: mono, fontSize: 9, marginTop: 1 }}>{a.type}</div>
+                        <div style={{ color: "#e0d8cc", fontFamily: serif, fontSize: 16 }}>{a.name}</div>
+                        <div style={{ color: "#909090", fontFamily: mono, fontSize: 11, marginTop: 1 }}>{a.type}</div>
                       </div>
                     </div>
-                    <span style={{ color: "#444", fontSize: 11 }}>{isOpen ? "▲" : "▼"}</span>
+                    <span style={{ color: "#909090", fontSize: 13 }}>{isOpen ? "▲" : "▼"}</span>
                   </div>
 
                   {isOpen && (
                     <div style={{ padding: "0 16px 16px", background: "rgba(0,0,0,0.2)" }}>
-                      <div style={{ color: "#8a8070", fontFamily: mono, fontSize: 11, lineHeight: 1.6, marginBottom: 12, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.05)" }}>{a.role}</div>
+                      <div style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 13, lineHeight: 1.6, marginBottom: 12, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.05)" }}>{a.role}</div>
 
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
                         <div>
                           <Label>HEADQUARTERS</Label>
-                          <div style={{ color: "#8a8070", fontFamily: mono, fontSize: 10, lineHeight: 1.5, marginBottom: 10 }}>{a.hq}</div>
+                          <div style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 12, lineHeight: 1.5, marginBottom: 10 }}>{a.hq}</div>
                           <Label>MANDATE / KEY FUNCTIONS</Label>
-                          {a.mandate.map((m, i) => <div key={i} style={{ color: "#6a6070", fontFamily: mono, fontSize: 10, padding: "2px 0", lineHeight: 1.5 }}>› {m}</div>)}
+                          {a.mandate.map((m, i) => <div key={i} style={{ color: "#aaa8b0", fontFamily: mono, fontSize: 12, padding: "2px 0", lineHeight: 1.5 }}>› {m}</div>)}
                         </div>
                         <div>
                           <Label>CAN DO</Label>
-                          {a.canDo.map((m, i) => <div key={i} style={{ color: "#40c8a0", fontFamily: mono, fontSize: 10, padding: "2px 0" }}>✓ {m}</div>)}
+                          {a.canDo.map((m, i) => <div key={i} style={{ color: "#c8a860", fontFamily: mono, fontSize: 12, padding: "2px 0" }}>✓ {m}</div>)}
                           <div style={{ marginTop: 8 }} />
                           <Label>CANNOT DO</Label>
-                          {a.cannotDo.map((m, i) => <div key={i} style={{ color: "#e05a3a", fontFamily: mono, fontSize: 10, padding: "2px 0" }}>✕ {m}</div>)}
+                          {a.cannotDo.map((m, i) => <div key={i} style={{ color: "#e05a3a", fontFamily: mono, fontSize: 12, padding: "2px 0" }}>✕ {m}</div>)}
                         </div>
                       </div>
 
                       <Label>INTER-AGENCY RELATIONSHIPS</Label>
-                      <div style={{ color: "#5a5060", fontFamily: mono, fontSize: 10, lineHeight: 1.6, marginBottom: 10 }}>{a.interagency}</div>
+                      <div style={{ color: "#a0a0b0", fontFamily: mono, fontSize: 12, lineHeight: 1.6, marginBottom: 10 }}>{a.interagency}</div>
 
                       <Label>TREATIES ADMINISTERED / CUSTODIED</Label>
-                      <div style={{ color: "#5a5060", fontFamily: mono, fontSize: 10, lineHeight: 1.6, marginBottom: 12 }}>{a.treatiesToAdminister}</div>
+                      <div style={{ color: "#a0a0b0", fontFamily: mono, fontSize: 12, lineHeight: 1.6, marginBottom: 12 }}>{a.treatiesToAdminister}</div>
 
                       <Label>SYSTEM OFFICES & FIELD PRESENCE</Label>
                       <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                         {a.offices.map((o, i) => (
                           <div key={i} style={{ display: "grid", gridTemplateColumns: "140px 200px 1fr", gap: 10, padding: "5px 0", borderBottom: "1px solid rgba(255,255,255,0.03)", alignItems: "start" }}>
-                            <span style={{ color: a.color, fontFamily: mono, fontSize: 9 }}>{o.code}</span>
-                            <span style={{ color: "#777", fontFamily: mono, fontSize: 10 }}>{o.loc}</span>
-                            <span style={{ color: "#444", fontFamily: mono, fontSize: 10 }}>{o.note}</span>
+                            <span style={{ color: a.color, fontFamily: mono, fontSize: 11 }}>{o.code}</span>
+                            <span style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 12 }}>{o.loc}</span>
+                            <span style={{ color: "#909090", fontFamily: mono, fontSize: 12 }}>{o.note}</span>
                           </div>
                         ))}
                       </div>
@@ -1469,10 +1563,10 @@ export default function Dashboard() {
                 { loc: "Kuiper Gateway Station (~100 AU)", agencies: ["TKA (KGS — outer frontier station)"] },
               ].map(row => (
                 <div key={row.loc} style={{ display: "grid", gridTemplateColumns: "240px 1fr", gap: 12, padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,0.04)", alignItems: "start" }}>
-                  <div style={{ color: "#888", fontFamily: mono, fontSize: 10 }}>{row.loc}</div>
+                  <div style={{ color: "#b0b0b0", fontFamily: mono, fontSize: 12 }}>{row.loc}</div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
                     {row.agencies.map((ag, i) => (
-                      <span key={i} style={{ color: "#555", fontFamily: mono, fontSize: 9, border: "1px solid rgba(255,255,255,0.05)", padding: "2px 6px", borderRadius: 2 }}>{ag}</span>
+                      <span key={i} style={{ color: "#a0a0a0", fontFamily: mono, fontSize: 11, border: "1px solid rgba(255,255,255,0.05)", padding: "2px 6px", borderRadius: 2 }}>{ag}</span>
                     ))}
                   </div>
                 </div>
@@ -1490,7 +1584,7 @@ export default function Dashboard() {
         {/* CULTURAL CODEX */}
         {tab === "culture" && (
           <div>
-            <div style={{ color: "#333", fontSize: 9, letterSpacing: 2, marginBottom: 16 }}>INTERPLANETARY DEMONYM & VERNACULAR CODEX · ISD CULTURAL DIVISION</div>
+            <div style={{ color: "#888898", fontSize: 11, letterSpacing: 2, marginBottom: 16 }}>INTERPLANETARY DEMONYM & VERNACULAR CODEX · ISD CULTURAL DIVISION</div>
             <div style={{ display: "flex", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
               {CULTURAL.map(c => {
                 const meta = BLOC_META[c.bloc];
@@ -1499,7 +1593,7 @@ export default function Dashboard() {
                     background: cultureSel === c.bloc ? meta.color : "transparent",
                     border: `1px solid ${meta.color}`,
                     color: cultureSel === c.bloc ? "#060810" : meta.color,
-                    fontFamily: mono, fontSize: 10, padding: "5px 14px",
+                    fontFamily: mono, fontSize: 12, padding: "5px 14px",
                     borderRadius: 2, cursor: "pointer", letterSpacing: 1, fontWeight: 600,
                   }}>{c.bloc}</button>
                 );
@@ -1513,31 +1607,31 @@ export default function Dashboard() {
               return (
                 <div>
                   <div style={{ fontFamily: serif, fontSize: 22, color: meta.color, marginBottom: 2 }}>{bloc.name}</div>
-                  <div style={{ fontFamily: mono, fontSize: 10, color: "#444", marginBottom: 20 }}>{bloc.tagline}</div>
+                  <div style={{ fontFamily: mono, fontSize: 12, color: "#909090", marginBottom: 20 }}>{bloc.tagline}</div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
                     <div>
                       <Label>OFFICIAL & RECOGNISED DEMONYMS</Label>
                       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
-                        {data.demonyms.map(d => <span key={d} style={{ color: meta.color, border: `1px solid ${meta.color}33`, fontFamily: mono, fontSize: 10, padding: "3px 8px", borderRadius: 2 }}>{d}</span>)}
+                        {data.demonyms.map(d => <span key={d} style={{ color: meta.color, border: `1px solid ${meta.color}33`, fontFamily: mono, fontSize: 12, padding: "3px 8px", borderRadius: 2 }}>{d}</span>)}
                       </div>
                       <Label>LIVED ENVIRONMENT</Label>
-                      <div style={{ color: "#8a8070", fontFamily: mono, fontSize: 11, lineHeight: 1.6, marginBottom: 16 }}>{data.lived}</div>
+                      <div style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 13, lineHeight: 1.6, marginBottom: 16 }}>{data.lived}</div>
                       <Label>SOCIAL RITUALS</Label>
-                      {data.rituals.map((r, i) => <div key={i} style={{ color: "#6a6060", fontFamily: mono, fontSize: 11, padding: "3px 0", lineHeight: 1.5 }}>› {r}</div>)}
+                      {data.rituals.map((r, i) => <div key={i} style={{ color: "#aaa8a8", fontFamily: mono, fontSize: 13, padding: "3px 0", lineHeight: 1.5 }}>› {r}</div>)}
                     </div>
                     <div>
                       <Label>VERNACULAR CODEX ENTRIES</Label>
                       {data.slang.map((s, i) => (
                         <div key={i} style={{ marginBottom: 12, borderLeft: `2px solid ${meta.color}44`, paddingLeft: 10 }}>
-                          <div style={{ color: meta.color, fontFamily: mono, fontSize: 11 }}>{s.term}</div>
-                          <div style={{ color: "#6a6060", fontFamily: mono, fontSize: 10, marginTop: 2, lineHeight: 1.5 }}>{s.meaning}</div>
+                          <div style={{ color: meta.color, fontFamily: mono, fontSize: 13 }}>{s.term}</div>
+                          <div style={{ color: "#aaa8a8", fontFamily: mono, fontSize: 12, marginTop: 2, lineHeight: 1.5 }}>{s.meaning}</div>
                         </div>
                       ))}
                       <Label style={{ marginTop: 10 }}>KEY INTER-BLOC LINGUISTIC TENSIONS</Label>
                       {data.tensions.map((t, i) => (
                         <div key={i} style={{ marginBottom: 10, background: "rgba(0,0,0,0.2)", padding: "8px 10px", borderRadius: 2 }}>
-                          <div style={{ color: "#888", fontFamily: mono, fontSize: 10, marginBottom: 4 }}>{t.pair}</div>
-                          <div style={{ color: "#5a5050", fontFamily: mono, fontSize: 10, lineHeight: 1.5 }}>{t.note}</div>
+                          <div style={{ color: "#b0b0b0", fontFamily: mono, fontSize: 12, marginBottom: 4 }}>{t.pair}</div>
+                          <div style={{ color: "#a09898", fontFamily: mono, fontSize: 12, lineHeight: 1.5 }}>{t.note}</div>
                         </div>
                       ))}
                     </div>
@@ -1551,7 +1645,7 @@ export default function Dashboard() {
         {/* SEARCH */}
         {tab === "search" && (
           <div>
-            <div style={{ color: "#333", fontSize: 9, letterSpacing: 2, marginBottom: 16 }}>FULL-REGISTRY KEYWORD SEARCH · BLOCS · OCCS · CONFLICT ZONES · AGENCIES</div>
+            <div style={{ color: "#888898", fontSize: 11, letterSpacing: 2, marginBottom: 16 }}>FULL-REGISTRY KEYWORD SEARCH · BLOCS · OCCS · CONFLICT ZONES · AGENCIES</div>
             <SearchPanel query={searchQuery} setQuery={setSearchQuery} />
           </div>
         )}
@@ -1594,7 +1688,7 @@ export default function Dashboard() {
         return (
           <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "#02040a", borderTop: "1px solid rgba(74,158,255,0.12)", height: 28, overflow: "hidden", zIndex: 100, display: "flex", alignItems: "center" }}>
             <style>{keyframes}</style>
-            <div style={{ flexShrink: 0, padding: "0 14px", borderRight: "1px solid rgba(74,158,255,0.15)", fontFamily: mono, fontSize: 9, color: "#4a9eff", letterSpacing: 2, whiteSpace: "nowrap" }}>
+            <div style={{ flexShrink: 0, padding: "0 14px", borderRight: "1px solid rgba(80,200,255,0.15)", fontFamily: mono, fontSize: 11, color: "#50c8ff", letterSpacing: 2, whiteSpace: "nowrap" }}>
               IA · ISD LIVE
             </div>
             <div style={{ flex: 1, overflow: "hidden" }}>
@@ -1603,10 +1697,10 @@ export default function Dashboard() {
                   const parts = t.split(" · ");
                   return (
                     <span key={i} style={{ display: "inline-flex", alignItems: "center", paddingRight: `${gap}px` }}>
-                      <span style={{ color: "#4a9eff55", fontFamily: mono, fontSize: 9, marginRight: 8 }}>◆</span>
-                      <span style={{ color: "#4a9eff", fontFamily: mono, fontSize: 9, marginRight: 3 }}>{parts[0]}</span>
+                      <span style={{ color: "#50c8ff55", fontFamily: mono, fontSize: 11, marginRight: 8 }}>◆</span>
+                      <span style={{ color: "#50c8ff", fontFamily: mono, fontSize: 11, marginRight: 3 }}>{parts[0]}</span>
                       {parts.slice(1).map((p, j) => (
-                        <span key={j} style={{ color: "#3a3a4a", fontFamily: mono, fontSize: 9 }}> · {p}</span>
+                        <span key={j} style={{ color: "#8888aa", fontFamily: mono, fontSize: 11 }}> · {p}</span>
                       ))}
                     </span>
                   );
