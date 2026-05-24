@@ -1062,15 +1062,17 @@ function SearchPanel({ query, setQuery }) {
 
     // Treaties & frameworks
     TREATIES.forEach(t => {
-      if ([t.id, t.name, t.type, t.purpose, t.notes, t.status, ...t.parties].some(s => s.toLowerCase().includes(q))) {
+      const fields = [t.id, t.name, t.type, t.purpose, t.status, ...(t.parties || []), t.notes].filter(Boolean);
+      if (fields.some(s => s.toLowerCase().includes(q))) {
         results.push({ type: "Treaty", id: t.id, title: `[${t.id}] ${t.name}`, subtitle: `${t.type} · ${t.status}`, color: "#f0a030" });
       }
     });
 
     // Agencies
     AGENCIES.forEach(a => {
-      if ([a.id, a.name, a.role, a.note].some(s => s.toLowerCase().includes(q))) {
-        results.push({ type: "Agency", id: a.id, title: `${a.id} — ${a.name}`, subtitle: a.role, color: "#4a9eff" });
+      const fields = [a.id, a.name, a.type, a.hq, a.interagency, a.treatiesToAdminister, ...(a.mandate || []), ...(a.canDo || []), ...(a.cannotDo || [])].filter(Boolean);
+      if (fields.some(s => s.toLowerCase().includes(q))) {
+        results.push({ type: "Agency", id: a.id, title: `${a.id} — ${a.name}`, subtitle: a.type, color: a.color });
       }
     });
 
