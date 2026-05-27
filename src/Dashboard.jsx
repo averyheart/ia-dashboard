@@ -15,14 +15,26 @@ const BLOCS = [
   {
     id: "TLC", name: "Terran–Lunar Commonwealth",
     tagline: "Sovereign Consortium · Bureaucratic Authority · Inner System Anchor",
-    mantra: '"We endure by order."',
+    mantra: '"We endure by order." · Lunar variant: "Precision is peace."',
     population: "~10–12 billion",
+    settlements: [
+      { name: "Nairobi (Accord Quarter)", role: "Earth political capital · Interplanetary district · GPA seat", type: "Surface city" },
+      { name: "Selenopolis", role: "Luna primary city · Lunar Assembly seat · lava tube network + surface domes", type: "Subsurface/surface hybrid" },
+      { name: "Concordia Station (CS-L1)", role: "Primary orbital hub · IA Diplomatic Complex · cislunar institutional centre", type: "Orbital station · EL1" },
+      { name: "Farpoint Station (FP-EL2)", role: "Deep-space comms & medical authority hub · ICC & IHC anchor", type: "Orbital station · EL2" },
+    ],
     currency: { name: "Terran Standard Credit (TSC)", slang: "Creds / Standards / Bluebacks" },
     governance: "Global Parliament Assembly (GPA) + Lunar Administrative Council (LAC)",
     identity: "Polite, image-conscious, diplomacy-driven. Rising youth and interplanetary identity tension.",
     pillars: ["Finance & banking (Earth/Eros)", "R&D & aerospace (Luna)", "Orbital construction", "NEO resource extraction", "Cultural exports"],
     weaknesses: ["Food imports from JFA", "Water & volatiles from BCC", "Advanced science reliant on SatCon"],
     factions: ["Corporate Bloc (dominant)", "New Earth Alliance", "Lunar Progressives", "Reform Cohort"],
+    govBodies: [
+      { code: "GPA", name: "Global Planetary Assembly", note: "Primary legislative parliament of Earth. Drafts interplanetary law, regulates trade and diplomatic protocols. Slow; vulnerable to corporate lobbying." },
+      { code: "LA", name: "Lunar Assembly", note: "Semi-autonomous governing body of Luna. Manages Lunar cities, industrial zones, orbital construction, and launch logistics." },
+      { code: "CHS", name: "Commonwealth High Secretariat", note: "Executive arm coordinating GPA and LA directives. Implements bloc-wide policies; mediates between Earth and Luna." },
+      { code: "CDN", name: "Commonwealth Defence Network", note: "TLC military structure. Manages anti-sabotage patrols, debris control, high-value convoy escort, and cislunar surveillance." },
+    ],
     militaryDoc: "Commonwealth Defence Network (CDN) — diplomacy-first; sanctions & legal enforcement over conflict.",
     occs: [
       { id: "TLC-0048", body: "4 Vesta", name: "Vesta Joint Development Charter", purpose: "Industrial expansion, metals, robotics", status: "Highly Contested", notes: "Primary rival claimants: MF, BCC. TLC megacorp-backed." },
@@ -41,14 +53,24 @@ const BLOCS = [
   {
     id: "MF", name: "Martian Federation",
     tagline: "Sovereign Polity · Expeditionary Culture · Mid-Gravity Adapted",
-    mantra: '"Mars endures."',
+    mantra: '"Martian-born, Martian-strong." · "Strength is engineered."',
     population: "~152 million (Mars surface + Phobos, Deimos, orbitals)",
+    settlements: [
+      { name: "Ares Vallis", role: "Capital & primary administrative city · FAM & ECC seat · Green Zone canopy city", type: "Surface canopy city · Mars" },
+      { name: "Deimos Arc Station (DAS)", role: "Primary orbital hub · outside Red Line · all external agency & IM presence", type: "Orbital station · Mars high orbit" },
+    ],
     currency: { name: "Martian RedMark (MRM)", slang: "Reds / Marks / Ironbacks" },
     governance: "Federal Assembly of Mars (FAM) + Executive Command Council (ECC) — joint civil–military authority",
     identity: "Disciplined, independent, suspicious of Inner System influence. Strong pioneering and terraforming pride.",
     pillars: ["Engineering & robotics", "Terraforming industry", "Minerals & metals", "Orbital shipyards (Deimos)", "Military manufacturing"],
     weaknesses: ["Food imports from JFA", "Water imports from BCC", "TLC financial network dependency"],
-    factions: ["Terraforming Directorate", "Orbital Defence Command", "Red Line Militarists", "Civilian Reform Assembly"],
+    factions: ["Militarist Bloc", "Terraformers' Council", "Civics Bloc", "Orbital Guilds"],
+    govBodies: [
+      { code: "FAM", name: "Federal Assembly of Mars", note: "Primary legislative body. Enacts federal law, oversees terraforming budgets, regulates military expenditure, approves OCC expansion mandates." },
+      { code: "ECC", name: "Executive Command Council", note: "Joint civil–military executive authority. Composed of the Federation Chancellor, High Marshal of the Red Line, Terraforming Directorate Chair, and Orbital Defence Command Chief." },
+      { code: "TD", name: "Terraforming Directorate", note: "Oversees Mars's active terraforming programme across Green, Amber, and Red Zones. Operates under ECC authority." },
+      { code: "ODC", name: "Orbital Defence Command", note: "Military command overseeing the Red Line perimeter, orbital security, and inter-bloc military posture." },
+    ],
     militaryDoc: "Red Line Strategic Perimeter Doctrine — deterrence through strength and rapid deployment. Assets: Orbital Command Fleet, Surface Defence Grid, Phobos Tactical Lenses.",
     occs: [
       { id: "PFAD", body: "2 Pallas", name: "Pallas Forward Authority Directive", purpose: "Military-forward operations & resource extraction", status: "Active, Diplomatically Contested", notes: "Anchors the Red Line defensive perimeter. TLC & BCC strongly object." },
@@ -65,14 +87,22 @@ const BLOCS = [
   {
     id: "BCC", name: "Belt Cooperative Compact",
     tagline: "Cooperative Federation · Labour Sovereignty · Resource Critical",
-    mantra: '"We survive together."',
+    mantra: '"We survive together." · "No one floats alone."',
     population: "~38–45 million (distributed across Belt habitats)",
+    settlements: [
+      { name: "Knotholm", role: "Administrative capital · Cooperative Assembly of Ceres (CAC) seat · subsurface tunnel-city", type: "Subsurface city · Ceres" },
+      { name: "High Ceres Ring (HCR)", role: "Primary orbital hub · freight processing & transfer · paired with Knotholm", type: "Orbital station · low Ceres orbit" },
+    ],
     currency: { name: "Belt Mutual Token (BMT)", slang: "Mutes / Tokens / Rockbits" },
-    governance: "Belt Syndicate Assembly + station militias + cooperative councils (Ceres-centred)",
+    governance: "Cooperative Assembly of Ceres (CAC) + Belt Syndicate Union (BSU) + station councils",
     identity: "Pragmatic, community-bound, anti-authority. Strongest self-determination movement in the system.",
     pillars: ["Water ice & volatiles (liquid hydrogen, deuterium)", "Metals extraction & shipbreaking", "Life-support exports", "Mid-Belt refineries"],
     weaknesses: ["Governance fragmentation", "Susceptible to tariffs & blockades", "Reliant on JFA & SatCon for food & science"],
     factions: ["Syndicalists", "Freehold Independents", "Progressive Belters", "Moderates"],
+    govBodies: [
+      { code: "CAC", name: "Cooperative Assembly of Ceres", note: "Primary BCC governance body. Mediates station disputes, establishes labour and safety regulations, oversees resource sharing, and negotiates external treaties." },
+      { code: "BSU", name: "Belt Syndicate Union", note: "System-wide labour union. Mediates worker disputes, negotiates contracts and resource distribution, organises strikes. Sometimes wields more power than elected officials." },
+    ],
     militaryDoc: "Defensive ambush tactics, low-G specialist combat, harassment of larger ships. Station militias, cooperative defence coalitions, patrol skiffs.",
     occs: [
       { id: "DCSA", body: "511 Davida", name: "Davida Collective Stewardship Accord", purpose: "Refuge colony & cooperative mining", status: "Stable — Financially Strained", notes: "Key site for displaced Belter populations. Heavy TLC debt leverage impacts autonomy." },
@@ -90,14 +120,27 @@ const BLOCS = [
   {
     id: "JFA", name: "Jovian Federal Alliance",
     tagline: "Sovereign Consortium · Scientific Mandate · Radiation-Conditioned",
-    mantra: '"We feed the system."',
+    mantra: '"We feed the system." · "The moons rise together."',
     population: "~121–125 million (Ganymede, Europa, Callisto, Io + orbitals)",
+    settlements: [
+      { name: "Thalassa Prime", role: "Primary administrative city · Ganymede Directorate seat · agricultural bio-domes + subsurface warrens", type: "Hybrid surface/subsurface · Ganymede" },
+      { name: "Jovian Crossroads Station (JCS)", role: "Primary orbital hub · convoy coordination · inner/outer system interchange", type: "Orbital station · Ganymede orbit" },
+      { name: "Ironhaven", role: "Shipyard & logistics city · Callisto Infrastructure Authority · Dockborn community", type: "Mixed surface/subsurface · Callisto" },
+      { name: "Lethbridge", role: "Scientific settlement · ice-shell hab network · subglacial interface research", type: "Ice-shell bored habitats · Europa" },
+    ],
     currency: { name: "Jovian Helion Unit (JHU)", slang: "Helions / J-Hus / Brights" },
     governance: "Pan-Jovian Federal Council (PJFC) + Great Moons Administrative Triumvirate (Ganymede, Europa, Callisto Directorates)",
     identity: "Structured, technocratic, collectivist. Food-culture pride and multi-moon poly-systems heritage.",
     pillars: ["Food production (60–70% system-wide)", "He-3 atmospheric skimming (w/ SatCon)", "Shipbuilding & logistics (Callisto)", "Geothermal energy (Io)"],
     weaknesses: ["Vulnerable to blockades at food relay points", "High energy demands for habitat climate control", "Political overextension into Belt"],
-    factions: ["Pan-Jovian Federal Council majority", "Freight Guilds", "Agricultural Cooperatives", "Energy Corporations"],
+    factions: ["Logistics Guild Coalition", "Agricultural Cooperatives", "Europa Progressives", "Callisto Traditionalists"],
+    govBodies: [
+      { code: "PJFC", name: "Pan-Jovian Federal Council", note: "Central legislative and coordinating authority. Manages food distribution treaties, inter-moon governance, freight lanes, energy grids, and tariff negotiations." },
+      { code: "GD", name: "Ganymede Directorate", note: "Moon-level authority overseeing agriculture, water-based food production, and administrative governance on Ganymede. Primary food supplier for TLC, MF, and BCC." },
+      { code: "ERC", name: "Europa Research Council", note: "Moon-level authority managing scientific development, cryo-tech, and under-ice research on Europa. Core of JFA's technological authority." },
+      { code: "CIA", name: "Callisto Infrastructure Authority", note: "Moon-level authority controlling shipyards, drydocks, and outer-system logistics on Callisto. Strategic transport and defence depth." },
+      { code: "IAP", name: "Io Autonomy Pact", note: "Semi-independent governance structure for Io. Oversees mining and geothermal energy production under JFA framework." },
+    ],
     militaryDoc: "Convoy Protection First doctrine. Assets: Convoy Defence Fleets, Trojan Patrol Squadrons, Callisto Shipyards, Europa Cybergrids.",
     occs: [
       { id: "H-FOR", body: "624 Hektor", name: "Hektor Federal Operations Registry", purpose: "Trojan monitoring & logistics anchoring", status: "Stable — Conflict-Prone", notes: "Illegal BCC mining nearby. MF accuses JFA of surveillance overreach." },
@@ -115,14 +158,24 @@ const BLOCS = [
   {
     id: "SatCon", name: "Saturnian Concord",
     tagline: "Sovereign Forum · Ethical Governance · Cryogenic Research Mandate",
-    mantra: '"Knowledge in Service."',
+    mantra: '"Knowledge in Service." · "The Long View."',
     population: "~79–83 million (Titan, Enceladus, Rhea + ring habitats)",
+    settlements: [
+      { name: "Aurantia", role: "Capital · Assembly of Titan seat · amber-atmosphere surface city · most Earth-like outer city", type: "Surface pressurised city · Titan" },
+    ],
     currency: { name: "Saturnian Solvency Note (SSN)", slang: "Solves / Notes / Frostmarks" },
     governance: "Assembly of Titan (AoT) + Enceladus Cryo-Accords Board (ECAB) + Rhea Engineering Consortium (REC)",
     identity: "Calm, introspective, consensus-oriented. Evidence-first; speed is seen as reckless.",
     pillars: ["Advanced AI & robotics", "Biotech & cryobiology", "He-3 skimming from Saturn (w/ JFA)", "Precision instruments & sensor grids", "Astronomical systems"],
     weaknesses: ["Food imports required", "High-value research attracts espionage", "Minimal offensive capacity"],
     factions: ["Consensus Bloc (majority)", "Titan Realists", "Cryo-Preservationists", "Rhea Engineers"],
+    govBodies: [
+      { code: "AoT", name: "Assembly of Titan", note: "Central deliberative chamber. Oversees inter-moon policies, approves research charters, regulates AI safety and cryoethical law, manages Concord-wide long-term initiatives. Seated in Aurantia." },
+      { code: "ECAB", name: "Enceladus Cryo-Accords Board", note: "Governs cryo-ocean science, biosphere research, and extremophile projects on Enceladus. Administers Enceladus's scientific preserve status and manages outside research access." },
+      { code: "REC", name: "Rhea Engineering Consortium", note: "Oversees orbital stations, observatories, megastructure arrays, and sensor networks on Rhea. Operates the HPTN primary verification array under ICC protocol." },
+      { code: "TCS", name: "Titan Corporate Syndications", note: "Coalition of ethical research corporations. Covers AI ethics, life-support engineering, atmospheric research, and cryogenic simulation technologies. Operates under AoT oversight." },
+      { code: "CoR", name: "Concord of the Rings", note: "Advisory council for Saturn's ring habitats. Regulates debris navigation, protects ring ecology, and ensures research–industry balance in Saturn's ring environment." },
+    ],
     militaryDoc: "Preservation Over Power doctrine. Assets: AI Ethical Grids, Cryo-Fog Arrays, Probe-Swarm Guardians, Rhea Sensor Lines (best early-warning system-wide).",
     occs: [
       { id: "VDSC", body: "20000 Varuna", name: "Varuna Deep-Sky Charter", purpose: "Far-out observatory & gravitational anomaly research", status: "Stable", notes: "Joint oversight with OSC legacy arrangements. MF suspects recon applications (unproven)." },
@@ -137,6 +190,199 @@ const BLOCS = [
       { zone: "Chariklo Drift Region", nature: "OSC legacy vessels interfere with ring-anomaly sensors", risk: "Low" },
     ],
   },
+];
+
+// ─── DIPLOMACY DATA ───────────────────────────────────────────────────────────
+
+const IDN_TIERS = [
+  { code: "IM", name: "Interplanetary Mission", desc: "Highest tier of diplomatic representation. Full sovereign enclave — the space-era embassy equivalent. AG-matched to sending bloc. Staff 30–120+. Interior is legally sovereign territory of the sending bloc.", color: "#50c8ff" },
+  { code: "CM", name: "Consular Mission", desc: "Secondary tier. Narrower scope than an IM. Often surface-based or in commercial hubs. No AG requirement unless housing outer-system staff. Partial extraterritorial status. Handles trade facilitation, transit disputes, worker protection, and routine legal assistance.", color: "#c8a860" },
+  { code: "TLO", name: "Technical Liaison Office", desc: "Specialised tier focused on science, ethics, logistics, or oversight. Minimal diplomatic immunity. Located in shared research platforms or host facilities. Acts as a technical bridge rather than a political one.", color: "#a060e0" },
+];
+
+const IDN_AG = [
+  { bloc: "TLC", ag: "0.9–1.0g", note: "Terran-normal. AG control entirely under sending bloc." },
+  { bloc: "MF",  ag: "0.8–1.0g", note: "Near-Terran. Zone A conditioning required for 1g." },
+  { bloc: "BCC", ag: "0.7–0.9g", note: "Mid-range. Lowest inner-system AG standard." },
+  { bloc: "JFA", ag: "0.6g",     note: "Low-G standard. No 1g zones in JFA territory." },
+  { bloc: "SatCon", ag: "0.5–0.8g", note: "Low-G range. SatCon does not employ 1g zones." },
+];
+
+const IDN_ENVOYS = [
+  { bloc: "TLC", title: "Ambassador" },
+  { bloc: "MF",  title: "Commissioner" },
+  { bloc: "BCC", title: "Senior Delegate" },
+  { bloc: "JFA", title: "Logistics Envoy" },
+  { bloc: "SatCon", title: "Scientific Chair" },
+];
+
+const IDN_SECURITY = [
+  { title: "Sovereign Security Forces", note: "IMs deploy their own internal protection units. Host bloc has no authority over IM security personnel." },
+  { title: "Zero-Host-Access Zones", note: "Host bloc cannot legally enter the IM's inner territory under any circumstances." },
+  { title: "Joint Oversight Committee", note: "Monitors sabotage attempts, cyber intrusions, AG system integrity, and docking-security compliance." },
+  { title: "Emergency Extraction Rights", note: "Diplomats may evacuate if relations deteriorate. IMs maintain autonomous thrusters, redundant life support, encrypted comms, and hardened docking ports." },
+];
+
+const IDN_FUNCTIONS = [
+  "Diplomatic negotiations & treaty enforcement",
+  "Crisis response & inter-bloc coordination",
+  "Communications relay",
+  "Cultural exchange & education programmes",
+  "Citizen services — legal, asylum, evacuation",
+  "Scientific or ethical oversight (bloc-dependent)",
+  "Trade & tariff mediation",
+];
+
+const TLO_SPECS = [
+  { bloc: "TLC", role: "Cultural exchange audits & education programme oversight" },
+  { bloc: "MF",  role: "Terraforming impact reviews (joint with SatCon)" },
+  { bloc: "BCC", role: "Resource extraction monitoring" },
+  { bloc: "JFA", role: "Cryo-biology compliance" },
+  { bloc: "SatCon", role: "AI ethics audits · terraforming impact reviews (joint with MF)" },
+  { bloc: "IA (legacy)", role: "Navigation corridor standardisation (OSC-era)" },
+];
+
+// ─── MOBILITY LEXICON DATA ────────────────────────────────────────────────────
+
+const VISA_TYPES = [
+  { code: "SSTP", name: "Short-Stay Travel Permit", max: "90 days", ag: "Minimal checks", subs: ["SSTP-T Tourism", "SSTP-W Work Visit", "SSTP-M Medical", "SSTP-A Academic", "SSTP-I Interagency"] },
+  { code: "RR",   name: "Rotational Residency", max: "6–48 months", ag: "G-Band checks required for cross-band movement", subs: ["RR-S Standard", "RR-T Technical", "RR-E Emergency", "RR-K Kuiper (frontier)"] },
+  { code: "LTSP", name: "Long-Term Settlement Permit", max: "5–25 years", ag: "Full LTAM clearance required", subs: ["LTSP-R Research", "LTSP-S Specialist", "LTSP-B Bilateral", "LTSP-F Family reunification"] },
+  { code: "FRR",  name: "Frontier Rotation Roster", max: "36–60 months on-site", ag: "Full IHC medical + psychological clearance mandatory", subs: ["TKA-issued only", "Not immigration — mission deployment", "No dependents permitted", "Standard cycle: 48 months"] },
+];
+
+const MOBILITY_LEXICON = [
+  { term: "G-Band Traveller", register: "Formal/semi-official", def: "An individual whose inter-bloc movement rights are tied to their IHC G-Band certification. Cleared to work or reside in gravity environments outside their home bloc's standard range." },
+  { term: "Dual-Banded", register: "Semi-official", def: "Holding home-bloc citizenship and G-Band certification for a secondary environment. Legal and physiological right to work across two distinct gravity classifications. Required for most mid-system and outer-system professional postings." },
+  { term: "Green Corridor", register: "Formal/informal", def: "The preferred or officially approved migration/visa route between two blocs — cleared of bureaucratic obstacles. 'There's no Green Corridor on that' means the movement faces significant administrative or political barriers." },
+  { term: "MRVZ", register: "Formal", def: "Machine-Readable Visa Zone. Unified encoding for all inter-bloc travel permits. Format: [BlocCode]-[PermitType]-[Subclass]-[Duration]-[G-Band]-[Checksum]. Digital MRVZ stored in IDN-linked identity chips; physical on passport pages." },
+  { term: "MRS", register: "Formal", def: "Machine-Readable Strip. Two-line physical strip on travel documents. Encodes visa expiry, gravity clearance, and identity checksum for automated border verification." },
+  { term: "Stamped", register: "Informal", def: "Holding a valid MRVZ — full inter-bloc movement authorisation. 'Are you stamped for this?' is standard informal pre-transit verification." },
+  { term: "Soft-stamped", register: "Informal", def: "Holding provisional clearance rather than full MRVZ authorisation. Technically permitted to move but subject to additional checks or conditions. Clearance can be withdrawn more easily than full authorisation." },
+];
+
+const NATURALISATION = [
+  { bloc: "TLC",    status: "Highly selective",      note: "Corporate, academic, or political merit required." },
+  { bloc: "MF",     status: "Merit-based, realistic", note: "Proven loyalty, competence, and endurance required." },
+  { bloc: "BCC",    status: "Open — low political weight", note: "Co-op membership grants residency rights." },
+  { bloc: "JFA",    status: "Near-impossible",        note: "Effectively closed. Research invitation only." },
+  { bloc: "SatCon", status: "Not offered",            note: "No citizenship pathway exists under SatCon law." },
+];
+
+// ─── ECONOMIC CORRIDORS DATA ─────────────────────────────────────────────────
+
+const CORRIDORS = [
+  {
+    id: "ISC", name: "Inner System Corridor",
+    informal: ["The Old Road (Earth–Mars segment)"],
+    type: "PEC", typeLabel: "Primary Economic Corridor",
+    blocs: ["TLC", "MF", "BCC"],
+    status: "Active — Nominal",
+    description: "The highest-density traffic artery in the Solar System, connecting the inner three blocs. Earth–Mars is the most-travelled route in history. Jointly regulated by TLC and MF on the Old Road segment.",
+    segments: [
+      "Earth orbit → Luna transport spine",
+      "Luna → Mars mid-radius sling",
+      "Mars → Ceres / KnotNet",
+    ],
+    choke: ["Luna–Earth L2 Checkpoint"],
+    risk: "Low",
+  },
+  {
+    id: "MJC", name: "Martian-Jovian Corridor",
+    informal: ["The Dust Line (Mars–Belt)", "The Deep Step (Belt–Jovian)"],
+    type: "STL", typeLabel: "Secondary Trade Lane",
+    blocs: ["MF", "BCC", "JFA"],
+    status: "Active — Monitored",
+    description: "The primary route connecting the inner system to the outer. The Dust Line crosses the Belt's inner edge; The Deep Step marks the psychological threshold from Belt space into the Jovian sphere. Subject to periodic friction from MF and JFA territorial posturing.",
+    segments: [
+      "Mars orbit → Pallas node",
+      "Pallas → Ganymede inbound arc",
+      "Ganymede → Europa research lane",
+    ],
+    choke: ["Ceres–High Arc Spine", "Ganymede Polar Node"],
+    risk: "Low–Medium",
+  },
+  {
+    id: "BCN", name: "Belt Cooperative Network",
+    informal: ["The Rock Road"],
+    type: "STL", typeLabel: "Secondary Trade Lane (BCC Internal)",
+    blocs: ["BCC"],
+    status: "Active — Fragmented",
+    description: "BCC's internal logistics network connecting the major Belt habitats and cooperative stations. Not a single corridor but a distributed web anchored on Ceres. The KnotNet designation reflects the network's nodal, non-linear structure.",
+    segments: [
+      "Vesta → Ceres",
+      "Ceres → Hygiea",
+      "Hygiea → independent KnotNet nodes",
+    ],
+    choke: ["Ceres–High Arc Spine"],
+    risk: "Medium",
+  },
+  {
+    id: "JSC", name: "Jovian-Saturnian Corridor",
+    informal: ["The Bright Run"],
+    type: "STL/SRP", typeLabel: "Secondary Trade Lane / Strategic Resource Path hybrid",
+    blocs: ["JFA", "SatCon"],
+    status: "Active — Nominal",
+    description: "The primary outer-system corridor linking the Jovian Alliance and the Saturnian Concord. Named for the high-yield energy and food cargo that defines its traffic profile. The He-3 handshake — JFA and SatCon's joint fuel supply leverage — flows through this route.",
+    segments: [
+      "Ganymede outbound arc",
+      "Callisto deep arc",
+      "Saturn orbital inbound corridor",
+    ],
+    choke: ["Titan Low-Orbit Exchange Ring"],
+    risk: "Low",
+  },
+  {
+    id: "SFC", name: "Saturnian-FarReach Corridor",
+    informal: ["The IGSC Drag (IGSC passage)"],
+    type: "FTC", typeLabel: "Frontier Transition Corridor",
+    blocs: ["SatCon", "TKA"],
+    status: "Active — Self-Sufficient Required",
+    description: "The transit route from the Saturnian sphere to FarReach Gateway. Passes through the Ice Giant Survey Corridor (IGSC) — an unsupported passage band spanning the USZ and NSZ with no infrastructure, docking, or emergency services. Vessels must be fully self-sufficient from Saturn's edge to FarReach. USZ offers viable gravitational assist geometry; INA publishes annual IGSC slingshot schedules.",
+    segments: [
+      "Titan orbital arc",
+      "Saturn edge ecliptic exit",
+      "IGSC transit — USZ (Uranus Survey Zone) passage",
+      "IGSC transit — NSZ (Neptune Survey Zone) passage",
+      "Arrival at FarReach Gateway (FRG)",
+    ],
+    choke: ["FarReach Import Quarantine"],
+    risk: "Medium–High",
+    note: "No corridor infrastructure, docking, or emergency services within the IGSC. Waypoint telemetry mandatory. Self-sufficient operations required.",
+  },
+  {
+    id: "KRC", name: "Kuiper Radial Corridor",
+    informal: ["The Long Dark (FRG–Kuiper transit)", "The Chain Run (full convoy cycle)"],
+    type: "FTC", typeLabel: "Frontier Transition Corridor",
+    blocs: ["TKA"],
+    status: "Active — Frontier Protocol Required",
+    description: "The deep-frontier route network branching from FarReach Gateway to the Big Six scientific sites. The Long Dark describes the psychological experience of the FRG–Kuiper transit. The Chain Run names the full convoy cycle through all sites. He-3CD drive mandatory for all frontier convoy vessels.",
+    segments: [
+      "FRG ↔ Pluto–Charon",
+      "FRG ↔ Eris–Dysnomia",
+      "FRG ↔ Haumea",
+      "FRG ↔ Makemake",
+      "FRG ↔ Quaoar",
+      "FRG ↔ Varuna",
+    ],
+    choke: ["Kuiper Gateway Station (KGS) Consular Checkpoint"],
+    risk: "High",
+    note: "He-3CD propulsion mandatory. Full LTAM clearance required. IHC Frontier Health Command on standby at FRG and KGS.",
+  },
+];
+
+const CORRIDOR_TYPES = [
+  { code: "PEC", label: "Primary Economic Corridor", desc: "Highest-density, highest-priority transit lanes." },
+  { code: "STL", label: "Secondary Trade Lane", desc: "Mid-priority freight and passenger corridors." },
+  { code: "FTC", label: "Frontier Transition Corridor", desc: "Outer-system routes extending toward FarReach and the Kuiper Big Six." },
+  { code: "SRP", label: "Strategic Resource Path", desc: "Purpose-built industrial corridors for water, fuel, raw ore, and He-3 transport." },
+];
+
+const HIGH_RISK_ZONES = [
+  { name: "Dust Windows", loc: "Inner Belt", desc: "Periodic high-density particulate windows from Belt collisions. INA issues avoidance schedules." },
+  { name: "Plasma Arcs", loc: "Jovian Vicinity", desc: "Intense charged-particle arcs from Jovian magnetosphere. Shield-rated vessels only. Io proximity escalates risk." },
+  { name: "Cold Convergence Regions", loc: "Outer Saturn–Kuiper Precursor", desc: "Thermal gradient collision zones generating micro-debris. Hull integrity checks mandatory before passage." },
+  { name: "Solar Drift Zones", loc: "Inner System, variable", desc: "Unpredictable solar wind intensification bands. INA issues drift zone advisories aligned to 11-year solar cycle." },
 ];
 
 // Tension matrix: [fromBloc][toBloc] = { level: 0-4, label, note }
@@ -667,11 +913,27 @@ function BlocDetail({ bloc }) {
           <div>
             <Label>POPULATION</Label>
             <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 13, marginBottom: 10 }}>{bloc.population}</div>
+            <Label>PRIMARY SETTLEMENTS</Label>
+            {(bloc.settlements || []).map((s, i) => (
+              <div key={i} style={{ marginBottom: 8, borderLeft: `2px solid ${meta.color}44`, paddingLeft: 8 }}>
+                <div style={{ color: meta.color, fontFamily: mono, fontSize: 12 }}>{s.name}</div>
+                <div style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 11, marginTop: 1, lineHeight: 1.5 }}>{s.role}</div>
+                <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 10, marginTop: 1 }}>{s.type}</div>
+              </div>
+            ))}
+            <div style={{ marginBottom: 10 }} />
             <Label>CURRENCY</Label>
             <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 13 }}>{bloc.currency.name}</div>
             <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 12, marginBottom: 10 }}>{bloc.currency.slang}</div>
-            <Label>GOVERNANCE</Label>
-            <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 13, lineHeight: 1.5, marginBottom: 10 }}>{bloc.governance}</div>
+            <Label>GOVERNANCE BODIES</Label>
+            {(bloc.govBodies || []).map((g, i) => (
+              <div key={i} style={{ marginBottom: 8, borderLeft: `2px solid ${meta.color}44`, paddingLeft: 8 }}>
+                <span style={{ color: meta.color, fontFamily: mono, fontSize: 11 }}>{g.code}</span>
+                <span style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 11, marginLeft: 8 }}>{g.name}</span>
+                <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 10, marginTop: 2, lineHeight: 1.5 }}>{g.note}</div>
+              </div>
+            ))}
+            <div style={{ marginBottom: 10 }} />
             <Label>IDENTITY</Label>
             <div style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 13, lineHeight: 1.5, marginBottom: 10 }}>{bloc.identity}</div>
             <Label>MANTRA</Label>
@@ -801,11 +1063,87 @@ function GravityTable() {
           ))}
         </div>
       </div>
+
+      {/* AG Zone Standards per bloc */}
+      <div style={{ marginTop: 20 }}>
+        <Label style={{ marginBottom: 12 }}>IHC HABITAT AG ZONE STANDARDS · PER-BLOC REFERENCE</Label>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 10 }}>
+          {[
+            {
+              bloc: "TLC", color: "#4a9eff",
+              daily: "0.7–1.0g",
+              crossBloc: "0.4–0.6g negotiation chambers for Outer delegates",
+              zones: [
+                { zone: "Zone A", g: "0.9–1.0g", use: "Official, diplomatic, and administrative spaces — Terran-normal" },
+                { zone: "Zone B", g: "0.7–0.9g", use: "Transit hubs, commercial districts, inter-bloc meeting areas" },
+                { zone: "Zone C", g: "0.6–0.8g", use: "Lunar residential and industrial districts" },
+              ],
+              note: "TLC treats 1g as the interplanetary reference point. Lunars conditioned from birth to function within 0.6–0.9g.",
+            },
+            {
+              bloc: "MF", color: "#e05a3a",
+              daily: "0.5–0.7g",
+              crossBloc: "Standard hosting in 0.5–0.7g",
+              zones: [
+                { zone: "Zone A", g: "0.9–1.0g", use: "Elite military, IM-prep, and diplomatic training — conditioning required" },
+                { zone: "Zone B", g: "0.7–0.9g", use: "Engineers, terraformers, and specialised work teams" },
+                { zone: "Zone C", g: "0.5–0.7g", use: "Main civic, residential, and commercial areas — daily life" },
+              ],
+              note: "Average Martians do not operate in 1g. Only military personnel and IM cadets undergo controlled 1g conditioning — demanding, supervised, and symbolically prestigious.",
+            },
+            {
+              bloc: "BCC", color: "#b0b0b0",
+              daily: "0.4–0.7g",
+              crossBloc: "Terrans, Martians, and Jovians hosted at 0.5–0.7g",
+              zones: [
+                { zone: "Standard", g: "0.4–0.7g", use: "All civilian, industrial, and cooperative environments" },
+                { zone: "IM Chambers", g: "0.7–0.9g", use: "Tiny IM-mandated diplomatic spaces for Inner visitors only" },
+              ],
+              note: "1g is never used in BCC territory. Belters view 1g as wasteful, archaic, and an Inner System obsession. Low-gravity agility is a point of cultural pride.",
+            },
+            {
+              bloc: "JFA", color: "#f0a030",
+              daily: "0.4–0.7g",
+              crossBloc: "Terrans and Martians hosted at 0.5–0.7g",
+              zones: [
+                { zone: "Standard", g: "0.4–0.7g", use: "Living, work, and agricultural environments across all moons" },
+                { zone: "IM Suites", g: "0.6g", use: "Small IM-compliant diplomatic suites for Inner visitors" },
+              ],
+              note: "Jovians cannot safely function in 1g. Stability in low-G is foundational; 1g is viewed as energetically wasteful. JFA does not use 1g zones.",
+            },
+            {
+              bloc: "SatCon", color: "#c8a860",
+              daily: "0.4–0.7g",
+              crossBloc: "Terrans and Martians hosted at 0.5–0.7g",
+              zones: [
+                { zone: "Standard", g: "0.4–0.7g", use: "Scientific, residential, and research zones across Titan, Enceladus, Rhea" },
+                { zone: "IM Chambers", g: "0.5–0.8g", use: "Small IM-compliant diplomatic chambers for Inner visitors" },
+              ],
+              note: "Saturnians cannot safely function in 1g. High gravity is viewed as wasteful and disruptive — a symbol of Inner System excess. SatCon does not employ 1g zones.",
+            },
+          ].map(b => (
+            <div key={b.bloc} style={{ border: `1px solid ${b.color}33`, borderTop: `2px solid ${b.color}`, borderRadius: 2, padding: "12px 14px" }}>
+              <div style={{ color: b.color, fontFamily: mono, fontSize: 11, letterSpacing: 1, marginBottom: 8 }}>{b.bloc}</div>
+              <Label style={{ marginBottom: 4 }}>DAILY AG BANDS</Label>
+              <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 12, marginBottom: 8 }}>{b.daily}</div>
+              <Label style={{ marginBottom: 4 }}>ZONES</Label>
+              {b.zones.map((z, i) => (
+                <div key={i} style={{ marginBottom: 5, borderLeft: `2px solid ${b.color}44`, paddingLeft: 8 }}>
+                  <span style={{ color: b.color, fontFamily: mono, fontSize: 10 }}>{z.zone}</span>
+                  <span style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 10, marginLeft: 6 }}>{z.g}</span>
+                  <div style={{ color: "#888898", fontFamily: mono, fontSize: 10, marginTop: 1, lineHeight: 1.4 }}>{z.use}</div>
+                </div>
+              ))}
+              <Label style={{ marginTop: 8, marginBottom: 4 }}>CROSS-BLOC HOSTING</Label>
+              <div style={{ color: "#888898", fontFamily: mono, fontSize: 10, marginBottom: 6, lineHeight: 1.4 }}>{b.crossBloc}</div>
+              <div style={{ color: "#666", fontFamily: mono, fontSize: 10, lineHeight: 1.5, borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 6 }}>⚑ {b.note}</div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
-
-// ─── MOBILITY PANEL ───────────────────────────────────────────────────────────
 
 function MobilityPanel() {
   const rows = [
@@ -844,6 +1182,55 @@ function MobilityPanel() {
             <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 12, marginTop: 6, lineHeight: 1.5 }}>{s.note}</div>
           </div>
         ))}
+      </div>
+
+      {/* Visa classification structure */}
+      <div style={{ marginTop: 24 }}>
+        <Label style={{ marginBottom: 12 }}>MRVZ VISA CLASSIFICATION STRUCTURE · SMIF REFERENCE</Label>
+        <div style={{ color: "#888898", fontFamily: mono, fontSize: 11, marginBottom: 12, lineHeight: 1.6 }}>
+          All inter-bloc travel permits follow the Machine-Readable Visa Zone (MRVZ) format: <span style={{ color: "#50c8ff" }}>[BlocCode]-[PermitType]-[Subclass]-[Duration]-[G-Band]-[Checksum]</span> · Example: <span style={{ color: "#d8d0c0" }}>MF-RR-S-24M-G2-9</span>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 10, marginBottom: 16 }}>
+          {VISA_TYPES.map((v, vi) => {
+            const colors = ["#c8b040", "#f0a030", "#e08030", "#e05a3a"];
+            const color = colors[vi];
+            return (
+              <div key={v.code} style={{ border: `1px solid ${color}33`, borderTop: `2px solid ${color}`, borderRadius: 2, padding: "10px 12px" }}>
+                <div style={{ color: color, fontFamily: mono, fontSize: 11, letterSpacing: 1 }}>{v.code}</div>
+                <div style={{ color: "#d8d0c0", fontFamily: serif, fontSize: 13, marginTop: 2, marginBottom: 6 }}>{v.name}</div>
+                <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 10, marginBottom: 4 }}>Max: {v.max}</div>
+                <div style={{ color: "#888898", fontFamily: mono, fontSize: 10, marginBottom: 6 }}>AG: {v.ag}</div>
+                {v.subs.map((s, i) => <div key={i} style={{ color: "#666", fontFamily: mono, fontSize: 10, padding: "1px 0" }}>· {s}</div>)}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Naturalisation by bloc */}
+        <Label style={{ marginBottom: 8 }}>NATURALISATION PATHWAYS BY BLOC</Label>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, marginBottom: 20 }}>
+          {NATURALISATION.map(b => (
+            <div key={b.bloc} style={{ border: `1px solid ${BLOC_META[b.bloc]?.color || "#50c8ff"}33`, borderRadius: 2, padding: "8px 10px" }}>
+              <div style={{ color: BLOC_META[b.bloc]?.color || "#50c8ff", fontFamily: mono, fontSize: 11, marginBottom: 4 }}>{b.bloc}</div>
+              <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 10, marginBottom: 4 }}>{b.status}</div>
+              <div style={{ color: "#888898", fontFamily: mono, fontSize: 10, lineHeight: 1.4 }}>{b.note}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Formal lexicon terms */}
+        <Label style={{ marginBottom: 8 }}>MOBILITY LEXICON · FORMAL & SEMI-OFFICIAL TERMS</Label>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+          {MOBILITY_LEXICON.map((l, i) => (
+            <div key={i} style={{ borderLeft: "2px solid rgba(80,200,255,0.3)", paddingLeft: 10, marginBottom: 8 }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "baseline", marginBottom: 3 }}>
+                <span style={{ color: "#50c8ff", fontFamily: mono, fontSize: 12 }}>{l.term}</span>
+                <span style={{ color: "#555", fontFamily: mono, fontSize: 10 }}>{l.register}</span>
+              </div>
+              <div style={{ color: "#888898", fontFamily: mono, fontSize: 11, lineHeight: 1.5 }}>{l.def}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -1124,6 +1511,70 @@ function SearchPanel({ query, setQuery }) {
         if (p.toLowerCase().includes(q))
           results.push({ type: "Economic Pillar", id: p, title: p, subtitle: `${b.name} pillar`, color: bMeta.color });
       });
+      // Settlements
+      (b.settlements || []).forEach(s => {
+        if ([s.name, s.role, s.type].some(f => f.toLowerCase().includes(q)))
+          results.push({ type: "Settlement", id: s.name, title: s.name, subtitle: `${s.role} · ${b.id}`, color: bMeta.color });
+      });
+      // Governance bodies
+      (b.govBodies || []).forEach(g => {
+        if ([g.code, g.name, g.note].some(f => f.toLowerCase().includes(q)))
+          results.push({ type: "Gov Body", id: g.code, title: `${g.code} — ${g.name}`, subtitle: `${b.id} governance body`, color: bMeta.color });
+      });
+    });
+
+    // IDN / Diplomacy
+    IDN_TIERS.forEach(t => {
+      if ([t.code, t.name, t.desc].some(s => s.toLowerCase().includes(q)))
+        results.push({ type: "Diplomacy", id: t.code, title: `${t.code} — ${t.name}`, subtitle: t.desc.substring(0, 80) + "…", color: t.color });
+    });
+    IDN_AG.forEach(r => {
+      if ([r.bloc, r.ag, r.note].some(s => s.toLowerCase().includes(q)))
+        results.push({ type: "IM AG Req", id: `im-ag-${r.bloc}`, title: `${r.bloc} IM — ${r.ag}`, subtitle: r.note, color: BLOC_META[r.bloc]?.color || "#50c8ff" });
+    });
+    IDN_ENVOYS.forEach(r => {
+      if ([r.bloc, r.title].some(s => s.toLowerCase().includes(q)))
+        results.push({ type: "Envoy Title", id: `envoy-${r.bloc}`, title: `${r.bloc} Envoy — ${r.title}`, subtitle: "IDN diplomatic title", color: BLOC_META[r.bloc]?.color || "#50c8ff" });
+    });
+    IDN_SECURITY.forEach(s => {
+      if ([s.title, s.note].some(f => f.toLowerCase().includes(q)))
+        results.push({ type: "IM Security", id: s.title, title: s.title, subtitle: s.note.substring(0, 80) + "…", color: "#50c8ff" });
+    });
+    IDN_FUNCTIONS.forEach(f => {
+      if (f.toLowerCase().includes(q))
+        results.push({ type: "IM Function", id: f, title: f, subtitle: "Interplanetary Mission core function", color: "#50c8ff" });
+    });
+    TLO_SPECS.forEach(t => {
+      if ([t.bloc, t.role].some(s => s.toLowerCase().includes(q)))
+        results.push({ type: "TLO", id: `tlo-${t.bloc}`, title: `TLO — ${t.bloc}`, subtitle: t.role, color: "#a060e0" });
+    });
+
+    // Visa types & mobility lexicon
+    VISA_TYPES.forEach(v => {
+      const fields = [v.code, v.name, v.max, v.ag, ...v.subs].filter(Boolean);
+      if (fields.some(s => s.toLowerCase().includes(q)))
+        results.push({ type: "Visa Type", id: v.code, title: `${v.code} — ${v.name}`, subtitle: `Max: ${v.max} · AG: ${v.ag}`, color: "#f0a030" });
+    });
+    MOBILITY_LEXICON.forEach(l => {
+      if ([l.term, l.register, l.def].some(s => s.toLowerCase().includes(q)))
+        results.push({ type: "Mobility Term", id: l.term, title: l.term, subtitle: `${l.register} · ${l.def.substring(0, 80)}…`, color: "#50c8ff" });
+    });
+    NATURALISATION.forEach(n => {
+      if ([n.bloc, n.status, n.note].some(s => s.toLowerCase().includes(q)))
+        results.push({ type: "Naturalisation", id: `nat-${n.bloc}`, title: `${n.bloc} — ${n.status}`, subtitle: n.note, color: BLOC_META[n.bloc]?.color || "#50c8ff" });
+    });
+
+    // Corridors
+    CORRIDORS.forEach(c => {
+      const fields = [c.id, c.name, c.typeLabel, c.description, c.status, ...c.informal, ...c.segments, ...c.blocs, ...(c.choke || [])].filter(Boolean);
+      if (fields.some(s => s.toLowerCase().includes(q)))
+        results.push({ type: "Corridor", id: c.id, title: `[${c.id}] ${c.name}`, subtitle: `${c.typeLabel} · ${c.blocs.join(", ")}`, color: "#50c8ff" });
+    });
+
+    // High-risk navigation zones
+    HIGH_RISK_ZONES.forEach(z => {
+      if ([z.name, z.loc, z.desc].some(s => s.toLowerCase().includes(q)))
+        results.push({ type: "Nav Zone", id: z.name, title: z.name, subtitle: `${z.loc} · INA Hazard Registry`, color: C.rMedH });
     });
 
     // Treaties & frameworks
@@ -1177,7 +1628,7 @@ function SearchPanel({ query, setQuery }) {
       <div style={{ display: "flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 2, padding: "8px 14px" }}>
         <span style={{ color: "#50c8ff", fontFamily: mono, fontSize: 13 }}>⌕</span>
         <input value={query} onChange={e => setQuery(e.target.value)}
-          placeholder="Search blocs, OCCs, treaties, agencies, G-bands, vernacular..."
+          placeholder="Search blocs, settlements, OCCs, corridors, treaties, agencies, G-bands, vernacular..."
           style={{ background: "transparent", border: "none", outline: "none", color: "#d8d0c0", fontFamily: mono, fontSize: 13, width: "100%" }} />
         {query && <button onClick={() => setQuery("")} style={{ background: "transparent", border: "none", color: "#909090", cursor: "pointer", fontFamily: mono, fontSize: 13 }}>✕</button>}
       </div>
@@ -1185,7 +1636,7 @@ function SearchPanel({ query, setQuery }) {
         <div style={{ marginTop: 8, border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden" }}>
           {allResults.map((r, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderBottom: "1px solid rgba(255,255,255,0.04)", background: "rgba(0,0,0,0.3)" }}>
-              <span style={{ color: r.color, fontFamily: mono, fontSize: 11, letterSpacing: 1, minWidth: 72 }}>{r.type.toUpperCase()}</span>
+              <span style={{ color: r.color, fontFamily: mono, fontSize: 11, letterSpacing: 1, minWidth: 130, display: "inline-block", flexShrink: 0 }}>{r.type.toUpperCase()}</span>
               <div>
                 <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 13 }}>{r.title}</div>
                 <div style={{ color: "#a0a0a0", fontFamily: mono, fontSize: 12, marginTop: 1 }}>{r.subtitle}</div>
@@ -1201,6 +1652,59 @@ function SearchPanel({ query, setQuery }) {
       )}
     </div>
   );
+}
+
+// ─── CORRIDOR COMPONENTS ──────────────────────────────────────────────────────
+
+function CorridorRow({ c }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, marginBottom: 10, overflow: "hidden" }}>
+      <div onClick={() => setOpen(!open)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", cursor: "pointer", background: open ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.01)" }}>
+        <div>
+          <span style={{ color: "#50c8ff", fontFamily: mono, fontSize: 12, letterSpacing: 1 }}>[{c.id}]</span>
+          <span style={{ color: "#f0ece4", fontFamily: serif, fontSize: 16, marginLeft: 10 }}>{c.name}</span>
+          <span style={{ color: "#888898", fontFamily: mono, fontSize: 11, marginLeft: 10 }}>{c.type}</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ display: "flex", gap: 6 }}>
+            {c.blocs.map(b => <span key={b} style={{ color: BLOC_META[b]?.color || "#888", fontFamily: mono, fontSize: 10, border: `1px solid ${BLOC_META[b]?.color || "#888"}33`, padding: "2px 6px", borderRadius: 2 }}>{b}</span>)}
+          </div>
+          <span style={{ color: riskColor(c.risk), fontFamily: mono, fontSize: 10 }}>● {c.risk}</span>
+          <span style={{ color: "#888898", fontSize: 11 }}>{open ? "▲" : "▼"}</span>
+        </div>
+      </div>
+      {open && (
+        <div style={{ padding: "0 16px 16px", background: "rgba(0,0,0,0.2)" }}>
+          {/* Informal names */}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10, paddingTop: 10, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+            {c.informal.map(n => <span key={n} style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 11, border: "1px solid rgba(255,255,255,0.08)", padding: "2px 8px", borderRadius: 2 }}>"{n}"</span>)}
+          </div>
+          <div style={{ color: "#b8b0a8", fontFamily: mono, fontSize: 12, lineHeight: 1.7, marginBottom: 12 }}>{c.description}</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div>
+              <Label style={{ marginBottom: 6 }}>SEGMENTS</Label>
+              {c.segments.map((s, i) => <div key={i} style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 11, padding: "2px 0" }}>› {s}</div>)}
+            </div>
+            <div>
+              <Label style={{ marginBottom: 6 }}>ITC CHOKE POINTS</Label>
+              {c.choke.map((ch, i) => <div key={i} style={{ color: "#50c8ff", fontFamily: mono, fontSize: 11, padding: "2px 0" }}>⚑ {ch}</div>)}
+              {c.note && (
+                <>
+                  <Label style={{ marginTop: 10, marginBottom: 6 }}>NAVIGATION NOTE</Label>
+                  <div style={{ color: "#888898", fontFamily: mono, fontSize: 11, lineHeight: 1.6 }}>{c.note}</div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CorridorList({ corridors }) {
+  return <>{corridors.map(c => <CorridorRow key={c.id} c={c} />)}</>;
 }
 
 // ─── TECH TREATY ROW ──────────────────────────────────────────────────────────
@@ -1333,6 +1837,8 @@ function BlocComparison() {
 const TABS = [
   { id: "map",        label: "SYSTEM MAP" },
   { id: "comparison", label: "BLOC COMPARISON" },
+  { id: "corridors",  label: "CORRIDORS" },
+  { id: "diplomacy",  label: "DIPLOMACY" },
   { id: "treaties",   label: "TREATIES" },
   { id: "agencies",   label: "IA AGENCIES" },
   { id: "gravity",    label: "G-BAND TABLE" },
@@ -1367,12 +1873,12 @@ export default function Dashboard() {
           <div>
             <div style={{ color: "#50c8ff", fontSize: 11, letterSpacing: 4, marginBottom: 5 }}>INTERPLANETARY ASSEMBLY · INFORMATION SYSTEMS DIVISION · NODE IA-CERES-07</div>
             <div style={{ fontFamily: serif, fontSize: 26, color: "#f0ece4", letterSpacing: 0.5 }}>Solar System Registry Terminal</div>
-            <div style={{ color: "#888898", fontSize: 11, marginTop: 4, letterSpacing: 1 }}>STATUS: NOMINAL · CYCLE: 2847.4 SOL · SMIF CLEARANCE: STANDARD · LTAM CERT: CURRENT</div>
+            <div style={{ color: "#888898", fontSize: 11, marginTop: 4, letterSpacing: 1 }}>STATUS: NOMINAL · SST: 14 MAR 2401 · 09:47:22 · UPLINK: ACTIVE · HRN SYNC: VERIFIED</div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             {[
               { label: "BLOCS",         value: "5",  color: "#50c8ff" },
-              { label: "AGENCIES",      value: "10", color: "#50c8ff" },
+              { label: "AGENCIES",      value: "9",  color: "#50c8ff" },
               { label: "TREATIES",      value: "6",  color: "#50c8ff" },
               { label: "TECH TREATIES", value: "19", color: "#50c8ff" },
               { label: "ACTIVE OCCS",   value: "20", color: "#50c8ff" },
@@ -1428,7 +1934,160 @@ export default function Dashboard() {
         {/* BLOC COMPARISON */}
         {tab === "comparison" && <BlocComparison />}
 
-        {/* TREATIES */}
+        {/* CORRIDORS */}
+        {tab === "corridors" && (
+          <div>
+            <div style={{ color: "#888898", fontSize: 11, fontFamily: mono, letterSpacing: 2, marginBottom: 16 }}>INA · ITC ECONOMIC CORRIDORS & TRADE LANES · JOINT REFERENCE</div>
+
+            {/* Corridor type legend */}
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
+              {CORRIDOR_TYPES.map(ct => (
+                <div key={ct.code} style={{ border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, padding: "6px 12px", background: "rgba(255,255,255,0.02)" }}>
+                  <span style={{ color: "#50c8ff", fontFamily: mono, fontSize: 11 }}>{ct.code}</span>
+                  <span style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 11, marginLeft: 8 }}>{ct.label}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Corridor cards */}
+            <CorridorList corridors={CORRIDORS} />
+
+            {/* High-risk zones */}
+            <div style={{ marginTop: 24 }}>
+              <div style={{ color: "#888898", fontSize: 11, fontFamily: mono, letterSpacing: 2, marginBottom: 12 }}>HIGH-RISK NAVIGATION ZONES · INA HAZARD REGISTRY</div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 8 }}>
+                {HIGH_RISK_ZONES.map(z => (
+                  <div key={z.name} style={{ border: `1px solid ${C.rMedH}33`, borderTop: `2px solid ${C.rMedH}`, borderRadius: 2, padding: "12px 14px" }}>
+                    <div style={{ color: C.rMedH, fontFamily: mono, fontSize: 12, marginBottom: 4 }}>{z.name}</div>
+                    <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 11, marginBottom: 6 }}>{z.loc}</div>
+                    <div style={{ color: "#888898", fontFamily: mono, fontSize: 11, lineHeight: 1.5 }}>{z.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Orbital dynamics note */}
+            <div style={{ marginTop: 20, padding: "12px 16px", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 2, background: "rgba(255,255,255,0.01)" }}>
+              <Label style={{ marginBottom: 8 }}>SEASONAL & ORBITAL DYNAMICS · INA REFERENCE</Label>
+              {[
+                { cycle: "Earth–Mars synodic window", period: "Every ~26 months", note: "Peak Inner System Corridor traffic; launch windows highly competitive." },
+                { cycle: "Belt cluster alignment", period: "Every 4–6 years", note: "Optimal Belt Cooperative Network internal transit windows." },
+                { cycle: "Jovian–Saturnian arc", period: "Every 19–20 years", note: "Optimal Jovian-Saturnian Corridor fuel efficiency window." },
+                { cycle: "Frontier convoy window", period: "~Every 11 years", note: "Deep-frontier transit optimisation; aligned to solar cycle." },
+              ].map((r, i) => (
+                <div key={i} style={{ display: "grid", gridTemplateColumns: "200px 120px 1fr", gap: 12, padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.03)", alignItems: "start" }}>
+                  <div style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 12 }}>{r.cycle}</div>
+                  <div style={{ color: "#50c8ff", fontFamily: mono, fontSize: 12 }}>{r.period}</div>
+                  <div style={{ color: "#888898", fontFamily: mono, fontSize: 11 }}>{r.note}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {tab === "diplomacy" && (
+          <div>
+            <div style={{ color: "#888898", fontSize: 11, fontFamily: mono, letterSpacing: 2, marginBottom: 4 }}>INTER-DIPLOMATIC NETWORK (IDN) · SOVEREIGN ENCLAVES · EXTRATERRITORIAL JURISDICTION</div>
+            <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 12, lineHeight: 1.6, marginBottom: 20 }}>
+              The IDN governs all formal diplomatic presence across the Solar System. Three tiers of representation are recognised: Interplanetary Missions (IMs), Consular Missions (CMs), and Technical Liaison Offices (TLOs). All operate under extraterritorial protections negotiated under the IDN framework.
+            </div>
+
+            {/* Three-tier overview */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 24 }}>
+              {IDN_TIERS.map(t => (
+                <div key={t.code} style={{ border: `1px solid ${t.color}33`, borderTop: `2px solid ${t.color}`, borderRadius: 2, padding: "12px 14px" }}>
+                  <div style={{ color: t.color, fontFamily: mono, fontSize: 11, letterSpacing: 1, marginBottom: 4 }}>{t.code}</div>
+                  <div style={{ color: "#e0d8cc", fontFamily: serif, fontSize: 14, marginBottom: 6 }}>{t.name}</div>
+                  <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 11, lineHeight: 1.6 }}>{t.desc}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* IM structure */}
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ color: "#50c8ff", fontFamily: mono, fontSize: 11, letterSpacing: 2, marginBottom: 12 }}>INTERPLANETARY MISSION — STRUCTURE & PROTOCOLS</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                <div>
+                  <Label style={{ marginBottom: 6 }}>LOCATION STANDARDS</Label>
+                  <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 12, lineHeight: 1.7, marginBottom: 12 }}>
+                    Most IMs are orbital — low planetary orbit, Lagrange points, shared diplomatic stations, or host-provided orbital corridors. Surface IMs exist only on Earth, Mars, and Ceres.
+                  </div>
+                  <Label style={{ marginBottom: 6 }}>CONSTRUCTION & SOVEREIGNTY</Label>
+                  <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 12, lineHeight: 1.7, marginBottom: 12 }}>
+                    Host bloc provides orbital rights, shielding, docking lanes, and emergency services. Sending bloc builds the habitat, AG ring, security systems, comms, and life support. Interior is legally sovereign territory of the sending bloc.
+                  </div>
+                  <Label style={{ marginBottom: 6 }}>CORE FUNCTIONS</Label>
+                  {IDN_FUNCTIONS.map((f, i) => (
+                    <div key={i} style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 11, padding: "2px 0" }}>› {f}</div>
+                  ))}
+                </div>
+                <div>
+                  <Label style={{ marginBottom: 6 }}>AG REQUIREMENTS BY SENDING BLOC</Label>
+                  {IDN_AG.map(r => (
+                    <div key={r.bloc} style={{ display: "flex", gap: 12, alignItems: "center", padding: "5px 0", borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
+                      <span style={{ color: BLOC_META[r.bloc]?.color || "#50c8ff", fontFamily: mono, fontSize: 11, minWidth: 54 }}>{r.bloc}</span>
+                      <span style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 12 }}>{r.ag}</span>
+                    </div>
+                  ))}
+                  <div style={{ color: "#888898", fontFamily: mono, fontSize: 11, marginTop: 6 }}>AG control remains entirely under the sending bloc.</div>
+                  <Label style={{ marginTop: 12, marginBottom: 6 }}>ENVOY TITLES BY BLOC</Label>
+                  {IDN_ENVOYS.map(r => (
+                    <div key={r.bloc} style={{ display: "flex", gap: 12, alignItems: "center", padding: "5px 0", borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
+                      <span style={{ color: BLOC_META[r.bloc]?.color || "#50c8ff", fontFamily: mono, fontSize: 11, minWidth: 54 }}>{r.bloc}</span>
+                      <span style={{ color: "#d8d0c0", fontFamily: mono, fontSize: 12 }}>{r.title}</span>
+                    </div>
+                  ))}
+                  <Label style={{ marginTop: 12, marginBottom: 6 }}>TYPICAL IM STAFF</Label>
+                  {["Head envoy + Deputy envoy", "Political officers", "Security personnel", "Engineers & AG specialists", "Medical team", "Trade or tariff officers", "Scientific or ethics advisors", "Comms staff"].map((s, i) => (
+                    <div key={i} style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 11, padding: "2px 0" }}>· {s}</div>
+                  ))}
+                  <div style={{ color: "#888898", fontFamily: mono, fontSize: 11, marginTop: 4 }}>Staff size: 30–120+</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Security & host rules */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
+              <div style={{ border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, padding: "14px 16px" }}>
+                <Label style={{ marginBottom: 8 }}>SECURITY PROTOCOLS</Label>
+                {IDN_SECURITY.map((s, i) => (
+                  <div key={i} style={{ marginBottom: 10, borderLeft: "2px solid rgba(80,200,255,0.3)", paddingLeft: 8 }}>
+                    <div style={{ color: "#50c8ff", fontFamily: mono, fontSize: 11 }}>{s.title}</div>
+                    <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 11, marginTop: 2, lineHeight: 1.5 }}>{s.note}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ border: "1px solid rgba(255,255,255,0.06)", borderRadius: 2, padding: "14px 16px" }}>
+                <Label style={{ marginBottom: 8 }}>GRAVITATIONAL ADAPTATION REALITIES</Label>
+                <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 12, lineHeight: 1.7, marginBottom: 10 }}>
+                  Inner-system diplomats in outer space require AG habitats to avoid bone loss, muscle atrophy, radiation stress, and cardiovascular complications.
+                </div>
+                <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 12, lineHeight: 1.7, marginBottom: 10 }}>
+                  Outer-system diplomats in 1g cannot tolerate full gravity long-term — requiring exo-support frames, limiting surface time to minutes or hours, often remaining in orbital IM stations indefinitely.
+                </div>
+                <div style={{ color: "#888898", fontFamily: mono, fontSize: 11, lineHeight: 1.6, borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 8 }}>
+                  ⚑ Most diplomacy occurs in orbit. True surface-to-surface diplomacy between Inner and Outer System blocs is rare and physically demanding.
+                </div>
+                <Label style={{ marginTop: 12, marginBottom: 6 }}>HOST LIMITATIONS</Label>
+                {["Cannot access IM interiors", "Cannot control life support or AG", "Cannot restrict diplomat movement (outside declared emergencies)", "Cannot interfere with comms"].map((l, i) => (
+                  <div key={i} style={{ color: "#d07060", fontFamily: mono, fontSize: 11, padding: "2px 0" }}>✕ {l}</div>
+                ))}
+              </div>
+            </div>
+
+            {/* TLO specialisations */}
+            <div style={{ border: "1px solid rgba(160,96,224,0.2)", borderTop: "2px solid #a060e0", borderRadius: 2, padding: "14px 16px" }}>
+              <Label style={{ marginBottom: 10 }}>TLO — TYPICAL SPECIALISATIONS BY BLOC</Label>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 8 }}>
+                {TLO_SPECS.map((t, i) => (
+                  <div key={i} style={{ borderLeft: `2px solid ${(BLOC_META[t.bloc]?.color || "#50c8ff")}55`, paddingLeft: 8 }}>
+                    <div style={{ color: BLOC_META[t.bloc]?.color || "#50c8ff", fontFamily: mono, fontSize: 11 }}>{t.bloc}</div>
+                    <div style={{ color: "#aaaaaa", fontFamily: mono, fontSize: 11, marginTop: 2 }}>{t.role}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
         {tab === "treaties" && (
           <div>
             <div style={{ color: "#888898", fontSize: 11, letterSpacing: 2, marginBottom: 4 }}>POLITICAL & DIPLOMATIC INSTRUMENTS · IA CUSTODY · DIRECT INTER-BLOC APPLICATION</div>
@@ -1649,7 +2308,7 @@ export default function Dashboard() {
         {/* SEARCH */}
         {tab === "search" && (
           <div>
-            <div style={{ color: "#888898", fontSize: 11, letterSpacing: 2, marginBottom: 16 }}>FULL-REGISTRY KEYWORD SEARCH · BLOCS · OCCS · CONFLICT ZONES · AGENCIES</div>
+            <div style={{ color: "#888898", fontSize: 11, letterSpacing: 2, marginBottom: 16 }}>FULL-REGISTRY KEYWORD SEARCH</div>
             <SearchPanel query={searchQuery} setQuery={setSearchQuery} />
           </div>
         )}
